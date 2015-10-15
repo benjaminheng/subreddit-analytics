@@ -1,0 +1,31 @@
+{
+  "name": "subreddit-analytics",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/benjaminheng/subreddit-analytics.git"
+  },
+  "scripts": {
+    "test": "mocha --compilers js:babel/register --recursive",
+    "test:watch": "npm run test -- --watch"
+  },
+  "bin": {
+    "mocha": "./node_modules/mocha/bin/mocha"
+  },
+  "author": "Ben",
+  "license": "MIT",
+  "dependencies": {
+    "immutable": "^3.7.5",
+    "react": "^0.14.0",
+    "react-redux": "^4.0.0",
+    "redux": "^3.0.2"
+  },
+  "devDependencies": {
+  "babel": "^5.8.23",
+    "chai": "^3.3.0",
+    "chai-immutable": "^1.3.0",
+    "mocha": "^2.3.3"
+  }
+}
