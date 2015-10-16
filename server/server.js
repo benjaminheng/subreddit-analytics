@@ -1,4 +1,5 @@
 import Express from 'express';
+import path from 'path';
 
 import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
@@ -13,31 +14,9 @@ const compiler = webpack(webpackConfig);
 app.use(webpackDevMiddleware(compiler, { noInfo: true, publicPath: webpackConfig.output.publicPath }));
 app.use(webpackHotMiddleware(compiler));
 
-// This is fired every time the server side receives a request
-app.use(handleRender);
-
-function handleRender(req, res) {
-    const initialState = {};
-    res.send(renderFullPage("", initialState));
-}
-
-function renderFullPage(html, initialState) {
-    return `
-    <!doctype html>
-    <html>
-      <head>
-        <title>Subreddit Analytics</title>
-      </head>
-      <body>
-        <div id="app">${html}</div>
-        <script>
-          window.__INITIAL_STATE__ = ${JSON.stringify(initialState)};
-        </script>
-        <script src="/static/bundle.js"></script>
-      </body>
-    </html>
-    `;
-}
+app.get("/", function(req, res) {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
 
 app.listen(port, (error) => {
     if (error) {
