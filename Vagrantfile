@@ -7,6 +7,8 @@ apt-get install -y nodejs
 cd /home/vagrant/project
 npm install --no-bin-links
 
+npm install -g gulp
+
 date > /etc/vagrant_provisioned_at
 SCRIPT
 
