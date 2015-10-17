@@ -21,8 +21,10 @@
     "express": "^4.13.3",
     "immutable": "^3.7.5",
     "react": "^0.14.0",
+    "react-dom": "^0.14.0",
     "react-redux": "^4.0.0",
-    "redux": "^3.0.2"
+    "redux": "^3.0.2",
+    "redux-thunk": "^1.0.0"
   },
   "devDependencies": {
     "babel-core": "^5.8.25",
