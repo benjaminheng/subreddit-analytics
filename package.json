@@ -2,13 +2,12 @@
   "name": "subreddit-analytics",
   "version": "0.0.0",
   "description": "",
-  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/benjaminheng/subreddit-analytics.git"
   },
   "scripts": {
-    "start": "node server/index.js",
+    "start": "node app/server/index.js",
     "test": "mocha --compilers js:babel/register --recursive",
     "test:watch": "npm run test -- --watch"
   },
