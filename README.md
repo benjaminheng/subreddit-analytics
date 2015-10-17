@@ -18,10 +18,10 @@ $ npm install
 
 ## Usage
 
-#### `npm start`
+**`npm start`**
 
 > Runs the server. If `NODE_ENV=production` is not set, the server is run in development mode.
 
-#### `npm test`
+**`npm test`**
 
 > Runs the unit tests.
