@@ -16,21 +16,12 @@ In progress.
 $ npm install
 ```
 
-## Running the app
+## Usage
 
-**Development**
+#### `npm start`
 
-```bash
-$ npm start
-```
+> Runs the server. If `NODE_ENV=production` is not set, the server is run in development mode.
 
-**Production**
+#### `npm test`
 
-```bash
-# *nix
-$ NODE_ENV=production npm start
-
-# Windows
-> set NODE_ENV=production
-> npm start
-```
+> Runs the unit tests.
