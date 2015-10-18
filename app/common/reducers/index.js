@@ -1,9 +1,10 @@
 import { combineReducers } from 'redux';
-import { selectedPeriod, periods } from './period'
+import { selectedPeriod, periods, earliestDate } from './period'
 
 const rootReducer = combineReducers({
     selectedPeriod,
-    periods
+    periods,
+    earliestDate
 });
 
 export default rootReducer;

@@ -2,10 +2,12 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import configureStore from '../common/store/configureStore'
-import rootReducer from '../common/reducers';
 import App from '../common/containers/App';
 
-const store = configureStore();
+// Grab the state from a global injected into server-generated HTML
+const initialState = window.__INITIAL_STATE__;
+
+const store = configureStore(initialState);
 const rootElement = document.getElementById('root');
 
 render(

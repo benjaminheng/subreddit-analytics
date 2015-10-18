@@ -6,8 +6,8 @@ const createStoreWithMiddleware = applyMiddleware(
     thunk
 )(createStore);
 
-export default function configureStore() {
-    const store = createStoreWithMiddleware(rootReducer);
+export default function configureStore(initialState) {
+    const store = createStoreWithMiddleware(rootReducer, initialState);
 
     if (module.hot) {
         // Enable Webpack hot module replacement for reducers

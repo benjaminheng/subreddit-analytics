@@ -25,3 +25,10 @@ export function periods(state, action) {
             return state;
     }
 }
+
+export function earliestDate(state, action) {
+    if (typeof state === 'undefined') {
+        return 'unable to retrieve';
+    }
+    return state;
+}

@@ -4,7 +4,7 @@ export default class Header extends Component {
     render() {
         return (
             <div>
-                <h1>Subreddit Analytics for /r/Singapore</h1>
+                <h1>/r/Singapore Stats</h1>
             </div>
         );
     }
