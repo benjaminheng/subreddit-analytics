@@ -1,23 +1,35 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { fetchStats } from '../actions';
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 
-export default class App extends Component {
+class App extends Component {
+    componentDidMount() {
+        const { dispatch, selectedPeriod } = this.props;
+        dispatch(fetchStats(selectedPeriod, 'start', 'end'));
+    }
+
     render() {
-        // TODO: Temporary
-        const totals = {
-            submissions: 10,
-            comments: 15
-        };
-        const dateSince = 'yesterday';
+        const earliestDate = 'yesterday';
+        const {dispatch, selectedPeriod, periods } = this.props;
 
         return (
             <div>
                 <Header />
                 <p>Test string</p>
-                <Footer totals = {totals}
-                        dateSince = {dateSince} />
+                <a href='#' >
+                    Refresh
+                </a>
+                <Footer totals = {periods['All time'].totals}
+                        earliestDate = {earliestDate} />
             </div>
         );
     }
 }
+
+function select(state) {
+    return state;
+}
+
+export default connect(select)(App);

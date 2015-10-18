@@ -9,7 +9,7 @@ export default class Footer extends Component {
                     {', '}
                     Total comments: {this.props.totals.comments}
                     {', '}
-                    Stats collected since: {this.props.dateSince}
+                    Stats collected since: {this.props.earliestDate}
                 </p>
             </div>
         );
@@ -21,5 +21,5 @@ Footer.propTypes = {
         submissions: PropTypes.number,
         comments: PropTypes.number
     }).isRequired,
-    dateSince: PropTypes.string.isRequired
+    earliestDate: PropTypes.string.isRequired
 }
