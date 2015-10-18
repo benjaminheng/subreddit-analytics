@@ -23,7 +23,13 @@ function handleRender(req, res) {
     // TODO: temporary, do API calls to get this instead.
     const initialState = {
         periods: {
-            'All time': {
+            'all time': {
+                start: 'tmp',
+                end: Date.now()
+            }
+        },
+        statsByPeriod: {
+            'all time': {
                 totals: {
                     submissions: 1000,
                     comments: 5000

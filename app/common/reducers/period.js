@@ -1,4 +1,4 @@
-import { SELECT_PERIOD, REQUEST_STATS, RECEIVE_STATS } from "../actions";
+import { SELECT_PERIOD, ADD_PERIOD, REQUEST_STATS, RECEIVE_STATS } from "../actions";
 
 export function selectedPeriod(state, action) {
     if (typeof state === 'undefined') {
@@ -7,13 +7,31 @@ export function selectedPeriod(state, action) {
 
     switch (action.type) {
         case SELECT_PERIOD:     // change selected period
-            return action.name;
+            return action.period;
         default:
             return state;
     }
 }
 
-function period(state, action) {
+export function periods(state, action) {
+    if (typeof state === 'undefined') {
+        return {}
+    }
+
+    switch (action.type) {
+        case ADD_PERIOD:
+            return Object.assign({}, state, {
+                [action.period]: {
+                    start: action.start,
+                    end: action.end
+                }
+            });
+        default:
+            return state;
+    }
+}
+
+function stats(state, action) {
     if (typeof state === 'undefined') {
         return {
             isFetching: false
@@ -36,7 +54,7 @@ function period(state, action) {
     }
 }
 
-export function periods(state, action) {
+export function statsByPeriod(state, action) {
     if (typeof state === 'undefined') {
         return {};
     }
@@ -45,7 +63,7 @@ export function periods(state, action) {
         case RECEIVE_STATS:
         case REQUEST_STATS:    // load period stats from database
             return Object.assign({}, state, {
-                [action.name]: period(state[action.name], action)
+                [action.period]: stats(state[action.period], action)
             });
         default:
             return state;
