@@ -10,11 +10,8 @@
     "start": "node app/server/index.js",
     "start:dev": "nodemon --watch app/server app/server/index.js",
     "test": "mocha --compilers js:babel/register --recursive",
-    "test:watch": "npm run test -- --watch"
-  },
-  "bin": {
-    "nodemon": "./node_modules/nodemon/bin/nodemon",
-    "mocha": "./node_modules/mocha/bin/mocha"
+    "test:watch": "npm run test -- --watch",
+    "build": "webpack -p --config webpack.production.config.js"
   },
   "author": "Ben",
   "license": "MIT",
