@@ -22,8 +22,6 @@ class App extends Component {
             <div>
                 <Header />
                 <p>Test string</p>
-                <Footer totals = {statsByPeriod['all time'].totals}
-                        earliestDate = {earliestDate} />
             </div>
         );
     }

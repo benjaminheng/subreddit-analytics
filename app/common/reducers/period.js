@@ -1,4 +1,5 @@
 import { SELECT_PERIOD, ADD_PERIOD, REQUEST_STATS, RECEIVE_STATS } from "../actions";
+import Immutable from 'immutable';
 
 export function selectedPeriod(state, action) {
     if (typeof state === 'undefined') {
@@ -15,17 +16,15 @@ export function selectedPeriod(state, action) {
 
 export function periods(state, action) {
     if (typeof state === 'undefined') {
-        return {}
+        return Immutable.fromJS({});
     }
 
     switch (action.type) {
         case ADD_PERIOD:
-            return Object.assign({}, state, {
-                [action.period]: {
-                    start: action.start,
-                    end: action.end
-                }
-            });
+            return state.set(action.period, Immutable.fromJS({
+                start: action.start,
+                end: action.end
+            }));
         default:
             return state;
     }
@@ -33,22 +32,20 @@ export function periods(state, action) {
 
 function stats(state, action) {
     if (typeof state === 'undefined') {
-        return {
+        return Immutable.fromJS({
             isFetching: false
-        };
+        });
     }
 
     switch (action.type) {
         case REQUEST_STATS:
-            return Object.assign({}, state, {
-                isFetching: true
-            });
+            return state.set(isFetching, true);
         case RECEIVE_STATS:
-            return Object.assign({}, state, {
+            return state.merge(Immutable.Map({
                 isFetching: false,
                 lastUpdated: action.receivedAt,
                 totals: action.stats.totals
-            });
+            }));
         default:
             return state;
     }
@@ -56,15 +53,13 @@ function stats(state, action) {
 
 export function statsByPeriod(state, action) {
     if (typeof state === 'undefined') {
-        return {};
+        return Immutable.fromJS({});
     }
 
     switch (action.type) {
         case RECEIVE_STATS:
         case REQUEST_STATS:    // load period stats from database
-            return Object.assign({}, state, {
-                [action.period]: stats(state[action.period], action)
-            });
+            state.set(action.period, stats(state.get(action.period), action));
         default:
             return state;
     }
