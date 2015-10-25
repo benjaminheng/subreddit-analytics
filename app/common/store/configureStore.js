@@ -1,27 +1,16 @@
 import { createStore, applyMiddleware } from 'redux';
 import thunkMiddleware from 'redux-thunk';
-import createLogger from 'redux-logger';
 import Immutable from 'immutable';
 import rootReducer from '../reducers';
 
-const logger = createLogger({
-    transformer: state => {
-        var newState = {};
-        Object.keys(state).forEach(key => {
-            if (Immutable.Iterable.isIterable(state[key])) {
-                newState[key] = state[key].toJS();
-            } else {
-                newState[key] = state[key];
-            }
-        });
-        return newState;
-    }
-});
+let middleware = [thunkMiddleware];
 
-const createStoreWithMiddleware = applyMiddleware(
-    thunkMiddleware,
-    logger
-)(createStore);
+if (process.env.NODE_ENV !== 'production') {
+    let logger = require('./loggerMiddleware');
+    middleware = [...middleware, logger];
+}
+
+const createStoreWithMiddleware = applyMiddleware(...middleware)(createStore);
 
 export default function configureStore(initialState) {
     const store = createStoreWithMiddleware(rootReducer, initialState);
