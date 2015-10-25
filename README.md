@@ -24,7 +24,7 @@ $ npm install
 
 ##### `npm run start:dev`
 
-> Same as `npm run start` but also enables nodemon for automatic reloading of the server when server files are changed. This is the recommended mode for development.
+> Same as `npm run start` but also enables nodemon to automatically reload the server when server files are changed. This is the recommended mode for development.
 
 ##### `npm run build`
 
