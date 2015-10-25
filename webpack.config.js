@@ -24,7 +24,7 @@ module.exports = {
     module: {
         // SCSS files: http://stackoverflow.com/questions/29210325/webpack-sass-where-is-the-css-file
         loaders: [{
-            test: /\.jsx?$/,
+            test: /\.js$/,
             loader: 'babel',
             exclude: /node_modules/,
             include: __dirname,
