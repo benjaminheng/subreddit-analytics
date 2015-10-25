@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchStats } from '../actions';
 import Header from '../components/Header'
+import PeriodSelector from '../components/PeriodSelector'
 import Footer from '../components/Footer'
 
 class App extends Component {
@@ -21,7 +22,7 @@ class App extends Component {
         return (
             <div>
                 <Header />
-                <p>Test string</p>
+                <PeriodSelector />
             </div>
         );
     }
