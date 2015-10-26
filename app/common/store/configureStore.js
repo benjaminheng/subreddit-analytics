@@ -1,11 +1,12 @@
 import { createStore, applyMiddleware } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import Immutable from 'immutable';
+import config from '../../../config';
 import rootReducer from '../reducers';
 
 let middleware = [thunkMiddleware];
 
-if (process.env.NODE_ENV !== 'production') {
+if (!config.isProduction) {
     let logger = require('./loggerMiddleware');
     middleware = [...middleware, logger];
 }

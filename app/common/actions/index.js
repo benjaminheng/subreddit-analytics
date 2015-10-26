@@ -42,7 +42,7 @@ export function fetchStats(period, start, end) {
         dispatch(addPeriod(period, start, end));
         dispatch(requestStats(period));
 
-        fetch(`/api/periodStats?start=${start}&end=${end}`, {
+        fetch(`/api/totalStats?start=${start}&end=${end}`, {
         }).then(response => response.json())
             .then(json => dispatch(receiveStats(period, json)));
 

@@ -12,7 +12,7 @@ class App extends Component {
 
     componentDidMount() {
         const { dispatch, selectedPeriod, periods } = this.props;
-        dispatch(fetchStats(selectedPeriod, 'start', 'end'));
+        //dispatch(fetchStats(selectedPeriod, 'start', 'end'));
     }
 
     render() {

@@ -1,14 +1,9 @@
 import knex from 'knex';
 import bookshelf from 'bookshelf';
+import config from '../../../config';
 
-const config = knex({
+const knexConfig = knex({
     client: 'pg',
-    connection: {
-        host: 'localhost',
-        port: 5432,
-        database: 'subreddit-analytics',
-        user: 'Ben',
-        password: process.env.DB_PASSWORD
-    }
+    connection: config.database.connection
 });
-export default bookshelf(config);
+export default bookshelf(knexConfig);
