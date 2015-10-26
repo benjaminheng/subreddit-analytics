@@ -1,16 +1,14 @@
 import Express from 'express';
+import * as database from './database';
 
 const router = Express.Router();
 
-router.get('/periodStats', function(req, res) {
+router.get('/totalStats', function(req, res) {
     // TODO: replace placeholder data
-    console.log(`start=${req.query.start} end=${req.query.end}`);
-    res.json({
-        totals: {
-            submissions: 10,
-            comments: 15,
-            uniqueCommenters: 20
-        }
+    console.log(`/totalStats -> ' + 'start=${req.query.start} end=${req.query.end}`);
+    database.getTotalStats('start', 'end').then(result => {
+        console.log('result -> ' + JSON.stringify(result));
+        res.json({});
     });
 });
 
