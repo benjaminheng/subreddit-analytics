@@ -16,10 +16,7 @@ module.exports = {
     plugins: [
         new webpack.optimize.OccurenceOrderPlugin(),
         new webpack.HotModuleReplacementPlugin(),
-        new webpack.NoErrorsPlugin(),
-        new ExtractTextPlugin('style.css', {
-            allChunks: true
-        })
+        new webpack.NoErrorsPlugin()
     ],
     module: {
         // SCSS files: http://stackoverflow.com/questions/29210325/webpack-sass-where-is-the-css-file
@@ -50,7 +47,7 @@ module.exports = {
             }
         }, {
             test: /\.scss$/,
-            loader: ExtractTextPlugin.extract('css!sass')
+            loader: 'style!css!sass'
         }]
     }
 };
