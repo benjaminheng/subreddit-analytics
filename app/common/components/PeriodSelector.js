@@ -1,26 +1,25 @@
 import React, { Component, PropTypes } from 'react';
+import SinglePeriodItem from './SinglePeriodItem';
 
 export default class PeriodSelector extends Component {
+    constructor(props) {
+        super(props);
+    }
+
     render() {
         // TODO: onClick: add period, fetch stats, select period
+        const { onPeriodSelect } = this.props;
         return (
             <div>
-                <span>
-                    <a href='#'>1 day</a>
-                </span>
-                <span>
-                    <a href='#'>1 week</a>
-                </span>
-                <span>
-                    <a href='#'>1 month</a>
-                </span>
-                <span>
-                    <a href='#'>6 months</a>
-                </span>
-                <span>
-                    <a href='#'>1 year</a>
-                </span>
+                <SinglePeriodItem period='1 day' start={128} end={256} clickHandler={onPeriodSelect} />
+                <SinglePeriodItem period='1 week' start={128} end={1024} clickHandler={onPeriodSelect} />
+                <SinglePeriodItem period='1 month' start={128} end={4096} clickHandler={onPeriodSelect} />
             </div>
         );
     }
+}
+
+PeriodSelector.propTypes = {
+    selectedPeriod: PropTypes.string.isRequired,
+    onPeriodSelect: PropTypes.func.isRequired
 }

@@ -3,20 +3,36 @@ import Immutable from 'immutable';
 
 function stats(state, action) {
     if (typeof state === 'undefined') {
-        return Immutable.fromJS({
-            isFetching: false
-        });
+        return Immutable.fromJS({});
     }
 
+    switch (action.type) { 
+        case RECEIVE_STATS:
+            return state.merge({
+                totals: action.stats.totals
+            });
+        default:
+            return state;
+    }
+}
+
+function period(state, action) {
+    if (typeof state === 'undefined') {
+        return Immutable.fromJS({
+            isFetching: true,
+            lastUpdated: 0,
+            stats: {}
+        });
+    }
     switch (action.type) {
         case REQUEST_STATS:
-            return state.set(isFetching, true);
+            return state.set('isFetching', true);
         case RECEIVE_STATS:
-            return state.merge(Immutable.Map({
+            return state.merge({
                 isFetching: false,
                 lastUpdated: action.receivedAt,
-                totals: action.stats.totals
-            }));
+                stats: stats(state.get('stats'), action)
+            });
         default:
             return state;
     }
@@ -28,9 +44,9 @@ export default function statsByPeriod(state, action) {
     }
 
     switch (action.type) {
+        case REQUEST_STATS:
         case RECEIVE_STATS:
-        case REQUEST_STATS:    // load period stats from database
-            state.set(action.period, stats(state.get(action.period), action));
+            return state.set(action.period, period(state.get(action.period), action));
         default:
             return state;
     }

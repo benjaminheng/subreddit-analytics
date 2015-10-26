@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchStats } from '../actions';
+import { selectPeriod, fetchStats } from '../actions';
 import Header from '../components/Header'
 import PeriodSelector from '../components/PeriodSelector'
 import Footer from '../components/Footer'
@@ -8,21 +8,32 @@ import Footer from '../components/Footer'
 class App extends Component {
     constructor(props) {
         super(props);
+        this.onPeriodSelect = this.onPeriodSelect.bind(this);
+        this.defaultPeriod = {
+            period: '1 week',
+            start: 32,
+            end: 64
+        }
     }
 
     componentDidMount() {
-        const { dispatch, selectedPeriod, periods } = this.props;
-        //dispatch(fetchStats(selectedPeriod, 'start', 'end'));
+        const { dispatch } = this.props;
+        dispatch(selectPeriod(this.defaultPeriod.period));
+        dispatch(fetchStats(this.defaultPeriod.period, this.defaultPeriod.start, this.defaultPeriod.end));
+    }
+
+    onPeriodSelect(period, start, end) {
+        const { dispatch } = this.props;
+        dispatch(selectPeriod(period));
+        dispatch(fetchStats(period, start, end));
     }
 
     render() {
-        const earliestDate = 'yesterday';
-        const {dispatch, selectedPeriod, periods, statsByPeriod } = this.props;
-
+        const { selectedPeriod } = this.props;
         return (
             <div>
                 <Header />
-                <PeriodSelector />
+                <PeriodSelector selectedPeriod={selectedPeriod} onPeriodSelect={this.onPeriodSelect} />
             </div>
         );
     }
