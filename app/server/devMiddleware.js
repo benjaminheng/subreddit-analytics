@@ -3,7 +3,7 @@ import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 import webpackConfig from '../../webpack.config';
 
-export default function getDevMiddleware() {
+export default function devMiddleware() {
     // Use this middleware to set up hot module reloading via webpack.
     const compiler = webpack(webpackConfig);
     return [

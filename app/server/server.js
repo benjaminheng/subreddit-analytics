@@ -12,8 +12,8 @@ const app = new Express();
 const port = 3000;
 
 if (process.env.NODE_ENV !== 'production') {
-    const getDevMiddleware = require('./getDevMiddleware');
-    app.use(getDevMiddleware());
+    const devMiddleware = require('./devMiddleware');
+    app.use(devMiddleware());
 }
 
 const publicPath = path.join(__dirname, '..', '..', 'dist');
