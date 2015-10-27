@@ -37,7 +37,17 @@ function receiveStats(period, json) {
     };
 }
 
-export function fetchStats(period) {
+function shouldFetchStats(state, period) {
+    const periodStats = state.statsByPeriod.get(period);
+    if (!periodStats) {
+        return true;
+    } else if (periodStats.get('isFetching')) {
+        return false
+    }
+    return true;
+}
+
+function fetchStats(period) {
     return (dispatch, getState) => {
         const interval = {
             start: getState().periods.get(period).get('start'),
@@ -59,4 +69,12 @@ export function fetchStats(period) {
 
         // catch error here?
     }
+}
+
+export function fetchStatsIfNeeded(period) {
+    return (dispatch, getState) => {
+        if (shouldFetchStats(getState(), period)) {
+            return dispatch(fetchStats(period));
+        }
+    };
 }

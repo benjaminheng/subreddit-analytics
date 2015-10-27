@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { selectPeriod, addPeriod, fetchStats } from '../actions';
+import { selectPeriod, addPeriod, fetchStatsIfNeeded } from '../actions';
 import Header from '../components/Header'
 import PeriodSelector from '../components/PeriodSelector'
 import Footer from '../components/Footer'
@@ -20,13 +20,13 @@ class App extends Component {
         const { dispatch } = this.props;
         dispatch(selectPeriod(this.defaultPeriod.period));
         dispatch(addPeriod(this.defaultPeriod.period, this.defaultPeriod.start, this.defaultPeriod.end));
-        dispatch(fetchStats(this.defaultPeriod.period));
+        dispatch(fetchStatsIfNeeded(this.defaultPeriod.period));
     }
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.selectedPeriod !== this.props.selectedPeriod) {
             const { dispatch, selectedPeriod } = nextProps;
-            dispatch(fetchStats(selectedPeriod));
+            dispatch(fetchStatsIfNeeded(selectedPeriod));
         }
     }
 
