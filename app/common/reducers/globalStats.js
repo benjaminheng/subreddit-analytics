@@ -7,10 +7,7 @@ const initialState = Immutable.fromJS({
     totalVotes: 0
 });
 
-export default function globalStats(state, action) {
-    if (typeof state === 'undefined') {
-        return initialState;
-    }
+export default function globalStats(state = initialState, action) {
     // TODO: UPDATE_GLOBAL_STATS
     return state;
 }

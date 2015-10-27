@@ -1,11 +1,14 @@
 import { REQUEST_STATS, RECEIVE_STATS } from "../actions";
 import Immutable from 'immutable';
 
-function stats(state, action) {
-    if (typeof state === 'undefined') {
-        return Immutable.fromJS({});
-    }
+const initialState = Immutable.fromJS({});
+const periodInitialState = Immutable.fromJS({
+    isFetching: true,
+    lastUpdated: 0,
+    stats: {}
+});
 
+function stats(state = initialState, action) {
     switch (action.type) { 
         case RECEIVE_STATS:
             return state.merge({
@@ -16,14 +19,7 @@ function stats(state, action) {
     }
 }
 
-function period(state, action) {
-    if (typeof state === 'undefined') {
-        return Immutable.fromJS({
-            isFetching: true,
-            lastUpdated: 0,
-            stats: {}
-        });
-    }
+function period(state = periodInitialState, action) {
     switch (action.type) {
         case REQUEST_STATS:
             return state.set('isFetching', true);
@@ -38,11 +34,7 @@ function period(state, action) {
     }
 }
 
-export default function statsByPeriod(state, action) {
-    if (typeof state === 'undefined') {
-        return Immutable.fromJS({});
-    }
-
+export default function statsByPeriod(state = initialState, action) {
     switch (action.type) {
         case REQUEST_STATS:
         case RECEIVE_STATS:

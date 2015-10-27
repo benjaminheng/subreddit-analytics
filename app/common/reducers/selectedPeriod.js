@@ -1,10 +1,8 @@
 import { SELECT_PERIOD } from "../actions";
 
-export default function selectedPeriod(state, action) {
-    if (typeof state === 'undefined') {
-        return '1 week';
-    }
+const initialState = '1 week';
 
+export default function selectedPeriod(state = initialState, action) {
     switch (action.type) {
         case SELECT_PERIOD:     // change selected period
             return action.period;
