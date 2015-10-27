@@ -4,6 +4,7 @@ export const SELECT_PERIOD = 'SELECT_PERIOD';
 export const ADD_PERIOD = 'ADD_PERIOD';
 export const REQUEST_STATS = 'REQUEST_STATS';
 export const RECEIVE_STATS = 'RECEIVE_STATS';
+export const RECEIVE_GLOBAL_STATS = 'RECEIVE_GLOBAL_STATS';
 
 export function selectPeriod(period){
     return {
@@ -18,6 +19,13 @@ export function addPeriod(period, start, end) {
         period,
         start,
         end
+    }
+}
+
+function receiveGlobalStats(json) {
+    return {
+        type: RECEIVE_GLOBAL_STATS,
+        stats: json
     }
 }
 
@@ -77,4 +85,12 @@ export function fetchStatsIfNeeded(period) {
             return dispatch(fetchStats(period));
         }
     };
+}
+
+export function fetchGlobalStats() {
+    return (dispatch) => {
+        fetch(`/api/globalStats`)
+            .then(response => response.json())
+            .then(json => dispatch(receiveGlobalStats(json)));
+    }
 }

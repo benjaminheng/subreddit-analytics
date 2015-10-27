@@ -2,6 +2,7 @@ import createLogger from 'redux-logger';
 import Immutable from 'immutable';
 
 const logger = createLogger({
+    collapsed: true,
     transformer: state => {
         var newState = {};
         Object.keys(state).forEach(key => {

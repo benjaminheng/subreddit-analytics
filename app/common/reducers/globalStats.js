@@ -1,13 +1,18 @@
 import Immutable from 'immutable';
+import { RECEIVE_GLOBAL_STATS } from '../actions';
 
 const initialState = Immutable.fromJS({
-    earliestDate: 'earliest-date',
-    totalSubmissions: 0,
-    totalComments: 0,
-    totalVotes: 0
+    earliestDate: 0,
+    submissions: 0,
+    comments: 0,
+    votes: 0
 });
 
 export default function globalStats(state = initialState, action) {
-    // TODO: UPDATE_GLOBAL_STATS
-    return state;
+    switch (action.type) {
+        case RECEIVE_GLOBAL_STATS:
+            return state.merge(action.stats);
+        default:
+            return state;
+    }
 }

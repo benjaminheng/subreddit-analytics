@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { selectPeriod, addPeriod, fetchStatsIfNeeded } from '../actions';
+import { selectPeriod, addPeriod, fetchGlobalStats, fetchStatsIfNeeded } from '../actions';
 import Header from '../components/Header'
 import PeriodSelector from '../components/PeriodSelector'
 import Footer from '../components/Footer'
@@ -9,18 +9,22 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.onPeriodSelect = this.onPeriodSelect.bind(this);
+    }
+
+    initializeDefaultPeriod() {
+        const { dispatch } = this.props;
         this.defaultPeriod = {
-            period: '1 week',
-            start: 32,
-            end: 64
+            period: '1 week', start: 32, end: 64
         }
+        dispatch(selectPeriod(this.defaultPeriod.period));
+        dispatch(addPeriod(this.defaultPeriod.period, this.defaultPeriod.start, this.defaultPeriod.end));
+        dispatch(fetchStatsIfNeeded(this.defaultPeriod.period));
     }
 
     componentDidMount() {
         const { dispatch } = this.props;
-        dispatch(selectPeriod(this.defaultPeriod.period));
-        dispatch(addPeriod(this.defaultPeriod.period, this.defaultPeriod.start, this.defaultPeriod.end));
-        dispatch(fetchStatsIfNeeded(this.defaultPeriod.period));
+        dispatch(fetchGlobalStats());
+        this.initializeDefaultPeriod();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -37,11 +41,12 @@ class App extends Component {
     }
 
     render() {
-        const { selectedPeriod } = this.props;
+        const { selectedPeriod, globalStats } = this.props;
         return (
             <div>
                 <Header />
                 <PeriodSelector selectedPeriod={selectedPeriod} onPeriodSelect={this.onPeriodSelect} />
+                <Footer globalStats={globalStats} />
             </div>
         );
     }

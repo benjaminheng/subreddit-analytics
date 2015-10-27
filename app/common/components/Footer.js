@@ -2,24 +2,17 @@ import React, { Component, PropTypes } from 'react';
 
 export default class Footer extends Component {
     render() {
+        const { globalStats } = this.props;
         return (
             <div className='footer'>
                 <p>
-                    Total submissions: {this.props.totals.submissions}
+                    {globalStats.get('submissions')} submissions
                     {', '}
-                    Total comments: {this.props.totals.comments}
+                    {globalStats.get('comments')} comments
                     {', '}
-                    Stats collected since: {this.props.earliestDate}
+                    Since: {globalStats.get('earliestDate')}
                 </p>
             </div>
         );
     }
-}
-
-Footer.propTypes = {
-    totals: PropTypes.shape({
-        submissions: PropTypes.number,
-        comments: PropTypes.number
-    }).isRequired,
-    earliestDate: PropTypes.string.isRequired
 }

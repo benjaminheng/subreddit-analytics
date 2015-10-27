@@ -44,9 +44,24 @@ export function getTotalStats(start, end) {
             getUniqueCommenters(start, end)
         ]).then(values => {
             resolve({
-                submissions: values[0],
-                comments: values[1],
-                commenters: values[2]
+                submissions: parseInt(values[0]),
+                comments: parseInt(values[1]),
+                commenters: parseInt(values[2])
+            });
+        });
+    });
+}
+
+export function getGlobalStats() {
+    const currentTime = (new Date).getTime() / 1000;
+    return new Promise((resolve, reject) => {
+        Promise.all([
+            getTotalSubmissions(0, currentTime),
+            getTotalComments(0, currentTime)
+        ]).then(values => {
+            resolve({
+                submissions: parseInt(values[0]),
+                comments: parseInt(values[1])
             });
         });
     });
