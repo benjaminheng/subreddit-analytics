@@ -37,9 +37,12 @@ function receiveStats(period, json) {
     };
 }
 
-export function fetchStats(period, start, end) {
-    return dispatch => {
-        dispatch(addPeriod(period, start, end));
+export function fetchStats(period) {
+    return (dispatch, getState) => {
+        const interval = {
+            start: getState().periods.get(period).get('start'),
+            end: getState().periods.get(period).get('end')
+        }
         dispatch(requestStats(period));
         // TODO: this is placeholder data
         dispatch(receiveStats(period, {
