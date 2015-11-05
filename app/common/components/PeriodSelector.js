@@ -1,9 +1,24 @@
 import React, { Component, PropTypes } from 'react';
 import SinglePeriodItem from './SinglePeriodItem';
+import date from '../utils/date';
 
 export default class PeriodSelector extends Component {
     constructor(props) {
         super(props);
+        this.defaultPeriods = {
+            '1 day': {
+                start: date.minus(date.now(), 1, 'days'),
+                end: date.now()
+            },
+            '1 week': {
+                start: date.minus(date.now(), 7, 'days'),
+                end: date.now()
+            },
+            '1 month': {
+                start: date.minus(date.now(), 30, 'days'),
+                end: date.now()
+            }
+        }
     }
 
     render() {
@@ -11,9 +26,9 @@ export default class PeriodSelector extends Component {
         const { onPeriodSelect } = this.props;
         return (
             <div>
-                <SinglePeriodItem period='1 day' start={128} end={256} clickHandler={onPeriodSelect} />
-                <SinglePeriodItem period='1 week' start={128} end={1024} clickHandler={onPeriodSelect} />
-                <SinglePeriodItem period='1 month' start={128} end={4096} clickHandler={onPeriodSelect} />
+                {Object.keys(this.defaultPeriods).map(key => 
+                    <SinglePeriodItem period={key} start={this.defaultPeriods[key].start} end={this.defaultPeriods[key].end} clickHandler={onPeriodSelect} />
+                )}
             </div>
         );
     }
