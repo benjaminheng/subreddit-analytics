@@ -1,5 +1,7 @@
 import bookshelf from './bookshelf';
 
+const BETWEEN_QUERY = 'extract(epoch from posted) > ? AND extract(epoch from posted) < ?';
+
 var Comment = bookshelf.Model.extend({
     tableName: 'comment'
 });
@@ -13,24 +15,40 @@ var Submission = bookshelf.Model.extend({
 });
 
 var Submissions = bookshelf.Collection.extend({
-    model: Submission 
+    model: Submission
 });
 
 function getTotalComments(start, end) {
-    return Comments.forge().count();
+    const qb = Comments.query();
+    qb.whereRaw(BETWEEN_QUERY, [start, end]).count().first();
+    return new Promise((resolve, reject) => {
+        qb.then(result => {
+            resolve(result.count);
+        });
+    });
 }
 
 function getTotalSubmissions(start, end) {
-    return Submissions.forge().count();
+    const qb = Submissions.query();
+    qb.whereRaw(BETWEEN_QUERY, [start, end]).count().first();
+    return new Promise((resolve, reject) => {
+        qb.then(result => {
+            resolve(result.count);
+        });
+    });
 }
 
 function getUniqueCommenters(start, end) {
     const qb = Comments.query();
     // SELECT count(*) FROM (SELECT DISTINCT author FROM comment) AS temp
+    qb.count().from(function() {
+        this.distinct('author').from('comment')
+        .whereRaw(BETWEEN_QUERY, [start, end])
+        .as('temp');
+    })
+    .first();
     return new Promise((resolve, reject) => {
-        qb.count().from(function() {
-            this.distinct('author').from('comment').as('temp');
-        }).first().then(result => {
+        qb.then(result => {
             resolve(result.count);
         });
     });
@@ -48,6 +66,8 @@ export function getTotalStats(start, end) {
                 comments: parseInt(values[1]),
                 commenters: parseInt(values[2])
             });
+        }).catch(err => {
+            console.log('error -> ' + err);
         });
     });
 }
@@ -63,6 +83,8 @@ export function getGlobalStats() {
                 submissions: parseInt(values[0]),
                 comments: parseInt(values[1])
             });
+        }).catch(err => {
+            console.log('error -> ' + err);
         });
     });
 }
