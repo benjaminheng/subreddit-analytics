@@ -8,17 +8,6 @@ const periodInitialState = Immutable.fromJS({
     stats: {}
 });
 
-function stats(state = initialState, action) {
-    switch (action.type) { 
-        case RECEIVE_STATS:
-            return state.merge({
-                totals: action.stats.totals
-            });
-        default:
-            return state;
-    }
-}
-
 function period(state = periodInitialState, action) {
     switch (action.type) {
         case REQUEST_STATS:
@@ -27,7 +16,7 @@ function period(state = periodInitialState, action) {
             return state.merge({
                 isFetching: false,
                 lastUpdated: action.receivedAt,
-                stats: stats(state.get('stats'), action)
+                stats: action.stats
             });
         default:
             return state;
