@@ -27,7 +27,7 @@ export default class PeriodSelector extends Component {
         return (
             <div>
                 {Object.keys(this.defaultPeriods).map(key => 
-                    <SinglePeriodItem period={key} start={this.defaultPeriods[key].start} end={this.defaultPeriods[key].end} clickHandler={onPeriodSelect} />
+                    <SinglePeriodItem key={key} period={key} start={this.defaultPeriods[key].start} end={this.defaultPeriods[key].end} clickHandler={onPeriodSelect} />
                 )}
             </div>
         );
