@@ -57,25 +57,14 @@ function shouldFetchStats(state, period) {
 
 function fetchStats(period) {
     return (dispatch, getState) => {
-        const interval = {
-            start: getState().periods.get(period).get('start'),
-            end: getState().periods.get(period).get('end')
-        }
+        const start = getState().periods.get(period).get('start');
+        const end = getState().periods.get(period).get('end');
         dispatch(requestStats(period));
-        // TODO: this is placeholder data
-        dispatch(receiveStats(period, {
-            totals: {
-                submissions: 10,
-                comments: 15,
-                uniqueCommenters: 20
-            }
-        }));
+        fetch(`/api/stats?start=${start}&end=${end}`)
+            .then(response => response.json())
+            .then(json => dispatch(receiveStats(period, json)));
 
-        //fetch(`/api/totalStats?start=${start}&end=${end}`)
-            //.then(response => response.json())
-            //.then(json => dispatch(receiveStats(period, json)));
-
-        // catch error here?
+        // TODO: catch error here
     }
 }
 

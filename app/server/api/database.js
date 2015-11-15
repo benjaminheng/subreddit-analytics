@@ -67,7 +67,7 @@ export function getTotalStats(start, end) {
                 commenters: parseInt(values[2])
             });
         }).catch(err => {
-            console.log('api.getTotalStats error -> ' + err);
+            console.log('[Error] api.getTotalStats -> ' + err);
         });
     });
 }
@@ -84,7 +84,7 @@ export function getGlobalStats() {
                 comments: parseInt(values[1])
             });
         }).catch(err => {
-            console.log('api.getGlobalStats error -> ' + err);
+            console.log('[Error] api.getGlobalStats -> ' + err);
         });
     });
 }

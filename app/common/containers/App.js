@@ -4,6 +4,8 @@ import { selectPeriod, addPeriod, fetchGlobalStats, fetchStatsIfNeeded } from '.
 import Header from '../components/Header'
 import PeriodSelector from '../components/PeriodSelector'
 import Footer from '../components/Footer'
+import date from '../utils/date';
+import defaultPeriods from '../utils/defaultPeriods';
 
 class App extends Component {
     constructor(props) {
@@ -13,12 +15,10 @@ class App extends Component {
 
     initializeDefaultPeriod() {
         const { dispatch } = this.props;
-        this.defaultPeriod = {
-            period: '1 week', start: 32, end: 64
-        }
-        dispatch(selectPeriod(this.defaultPeriod.period));
-        dispatch(addPeriod(this.defaultPeriod.period, this.defaultPeriod.start, this.defaultPeriod.end));
-        dispatch(fetchStatsIfNeeded(this.defaultPeriod.period));
+        const period = '1 week';
+        dispatch(selectPeriod(period));
+        dispatch(addPeriod(period, defaultPeriods[period].start, defaultPeriods[period].end));
+        dispatch(fetchStatsIfNeeded(period));
     }
 
     componentDidMount() {
