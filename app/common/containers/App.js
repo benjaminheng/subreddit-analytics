@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { fromJS } from 'immutable';
 import { selectPeriod, addPeriod, fetchGlobalStats, fetchStatsIfNeeded } from '../actions';
 import Header from '../components/Header'
 import PeriodSelector from '../components/PeriodSelector'
@@ -35,14 +36,6 @@ class App extends Component {
         }
     }
 
-    shouldComponentUpdate(nextProps, nextState) {
-        const { selectedPeriod, statsByPeriod } = nextProps;
-        if (typeof statsByPeriod.getIn([selectedPeriod, 'stats']) === 'undefined') {
-            return false;
-        }
-        return true;
-    }
-
     onPeriodSelect(period, start, end) {
         const { dispatch } = this.props;
         dispatch(addPeriod(period, start, end));
@@ -50,8 +43,7 @@ class App extends Component {
     }
 
     render() {
-        const { selectedPeriod, globalStats, statsByPeriod } = this.props;
-        const stats = statsByPeriod.getIn([selectedPeriod, 'stats']);
+        const { selectedPeriod, globalStats, stats} = this.props;
         return (
             <div>
                 <Header />
@@ -64,7 +56,13 @@ class App extends Component {
 }
 
 function select(state) {
-    return state;
+    const { selectedPeriod, periods, statsByPeriod, globalStats } = state;
+    const stats = statsByPeriod.getIn([selectedPeriod, 'stats'], fromJS({
+        totals: {}
+    }))
+    return {
+        selectedPeriod, stats, globalStats
+    };
 }
 
 export default connect(select)(App);
