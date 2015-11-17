@@ -1,11 +1,15 @@
 import { REQUEST_STATS, RECEIVE_STATS } from "../actions";
 import Immutable from 'immutable';
 
-const initialState = Immutable.fromJS({});
 const periodInitialState = Immutable.fromJS({
-    isFetching: true,
+    isFetching: false,
     lastUpdated: 0,
-    stats: {}
+    stats: {
+        totals: {}
+    }
+});
+const initialState = Immutable.fromJS({
+    default: periodInitialState
 });
 
 function period(state = periodInitialState, action) {

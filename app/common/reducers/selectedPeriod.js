@@ -1,6 +1,6 @@
 import { SELECT_PERIOD } from "../actions";
 
-const initialState = '1 week';
+const initialState = 'default';
 
 export default function selectedPeriod(state = initialState, action) {
     switch (action.type) {
