@@ -4,9 +4,7 @@ import Immutable from 'immutable';
 const periodInitialState = Immutable.fromJS({
     isFetching: false,
     lastUpdated: 0,
-    stats: {
-        totals: {}
-    }
+    stats: {}
 });
 const initialState = Immutable.fromJS({
     default: periodInitialState

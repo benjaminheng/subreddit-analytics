@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fromJS } from 'immutable';
 import { selectPeriod, addPeriod, fetchGlobalStats, fetchStatsIfNeeded } from '../actions';
 import Header from '../components/Header'
 import PeriodSelector from '../components/PeriodSelector'
@@ -43,12 +42,17 @@ class App extends Component {
     }
 
     render() {
-        const { selectedPeriod, globalStats, stats} = this.props;
+        const { selectedPeriod, globalStats, statsByPeriod, displayedStats } = this.props;
+        const isFetching = statsByPeriod.getIn([selectedPeriod, 'isFetching']);
+
         return (
             <div>
                 <Header />
                 <PeriodSelector selectedPeriod={selectedPeriod} onPeriodSelect={this.onPeriodSelect} />
-                <Counters items={stats.get('totals')} />
+                {isFetching &&
+                    <div>Loading...</div>
+                }
+                <Counters items={displayedStats.get('totals')} />
                 <Footer globalStats={globalStats} />
             </div>
         );
@@ -56,13 +60,7 @@ class App extends Component {
 }
 
 function select(state) {
-    const { selectedPeriod, periods, statsByPeriod, globalStats } = state;
-    const stats = statsByPeriod.getIn([selectedPeriod, 'stats'], fromJS({
-        totals: {}
-    }))
-    return {
-        selectedPeriod, stats, globalStats
-    };
+    return state;
 }
 
 export default connect(select)(App);
