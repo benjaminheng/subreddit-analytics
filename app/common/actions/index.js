@@ -1,4 +1,5 @@
 import fetch from 'isomorphic-fetch';
+import date from '../utils/date';
 
 export const SELECT_PERIOD = 'SELECT_PERIOD';
 export const ADD_PERIOD = 'ADD_PERIOD';
@@ -41,7 +42,7 @@ function receiveStats(period, json) {
         type: RECEIVE_STATS,
         period,
         stats: json,
-        receivedAt: Date.now()
+        receivedAt: date.now()
     };
 }
 
@@ -50,6 +51,9 @@ function shouldFetchStats(state, period) {
     if (!periodStats) {
         return true;
     } else if (periodStats.get('isFetching')) {
+        return false
+    } else if (date.now() - periodStats.get('lastUpdated') < 360) {
+        // last updated less than 5 minutes ago
         return false
     }
     return true;

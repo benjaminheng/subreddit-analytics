@@ -42,11 +42,14 @@ class App extends Component {
     }
 
     render() {
-        const { selectedPeriod, globalStats, stats} = this.props;
+        const { selectedPeriod, globalStats, stats, isFetching } = this.props;
         return (
             <div>
                 <Header />
                 <PeriodSelector selectedPeriod={selectedPeriod} onPeriodSelect={this.onPeriodSelect} />
+                {isFetching && 
+                    <div>Loading...</div>
+                }
                 <Counters items={stats.get('totals')} />
                 <Footer globalStats={globalStats} />
             </div>
@@ -56,11 +59,14 @@ class App extends Component {
 
 function select(state) {
     const { selectedPeriod, periods, statsByPeriod, globalStats } = state;
+
+    const isFetching = statsByPeriod.getIn([selectedPeriod, 'isFetching']);
     const stats = statsByPeriod.getIn([selectedPeriod, 'stats'], fromJS({
         totals: {}
     }))
+
     return {
-        selectedPeriod, stats, globalStats
+        selectedPeriod, stats, isFetching, globalStats
     };
 }
 
