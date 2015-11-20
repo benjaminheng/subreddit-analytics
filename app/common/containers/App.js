@@ -19,7 +19,6 @@ class App extends Component {
         const period = '1 week';
         dispatch(addPeriod(period, defaultPeriods[period].start, defaultPeriods[period].end));
         dispatch(selectPeriod(period));
-        dispatch(fetchStatsIfNeeded(period));
     }
 
     componentDidMount() {
