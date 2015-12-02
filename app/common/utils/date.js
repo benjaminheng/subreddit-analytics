@@ -1,3 +1,9 @@
+import dateformat from 'dateformat';
+
+function pretty(seconds) {
+    return dateformat(toDate(seconds), 'dd-mm-yyyy hh:MM TT');
+}
+
 function toSeconds(date) {
     return Math.ceil(date.getTime() / 1000);
 }
@@ -29,5 +35,6 @@ function minusDays(seconds, number) {
 export default { 
     now,
     minus,
-    toDate
+    toDate,
+    pretty
 };

@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import date from '../utils/date';
 
 export default class Footer extends Component {
     render() {
@@ -10,7 +11,7 @@ export default class Footer extends Component {
                     {', '}
                     {globalStats.get('comments')} comments
                     {', '}
-                    Since: {globalStats.get('earliestDate')}
+                    Since: {date.pretty(globalStats.get('earliestDate'))}
                 </p>
             </div>
         );

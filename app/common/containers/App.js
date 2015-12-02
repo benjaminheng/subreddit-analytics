@@ -6,7 +6,6 @@ import Header from '../components/Header'
 import PeriodSelector from '../components/PeriodSelector'
 import Counters from '../components/Counters'
 import Footer from '../components/Footer'
-import date from '../utils/date';
 import defaultPeriods from '../utils/defaultPeriods';
 
 class App extends Component {
