@@ -1,34 +1,38 @@
 import React, { Component, PropTypes } from 'react';
 
 if (typeof window !== 'undefined') {
-    global.HighchartsAdapter = require('highcharts-release/adapters/standalone-framework');
-    console.log(global.HighchartsAdapter);
-    var Highcharts = require('highcharts-release/highcharts');
-    console.log(Highcharts);
+    // Use exports-loader to get the HighchartsAdapter variable out of the 
+    // package since it doesn't export the variable as per CommonJS convention
+    global.HighchartsAdapter = require('exports?HighchartsAdapter!highcharts-release/adapters/standalone-framework.js');
+    require('highcharts-release/highcharts.js');
 }
 
-export default class Highchart extends Component {
+export default class Chart extends Component {
     constructor(props) {
         super(props);
     }
 
     componentDidMount() {
-        this.renderChart();
+        this.renderChart(this.props.config);
     }
 
-    renderChart() {
+    shouldComponentUpdate(nextProps) {
+        if (this.props.config !== nextProps.config) {
+            this.renderChart(nextProps.config);
+        }
+        return true;
+    }
+
+    renderChart(config) {
         if (typeof window !== 'undefined') {
-            // hack to only include highcharts when not rendering on server
-            const config = this.props.config;
             const chartConfig = config.chart;
             this.chart = new Highcharts['Chart']({
                 ...config,
                 chart: {
-                    type: 'bar',
+                    ...chartConfig,
                     renderTo: this.refs.chart
                 }
             });
-            console.log(this.chart);
         }
     }
 
@@ -44,6 +48,6 @@ export default class Highchart extends Component {
     }
 }
 
-Highchart.propTypes = {
+Chart.propTypes = {
     config: PropTypes.object.isRequired
 }

@@ -7,7 +7,7 @@ import PeriodSelector from '../components/PeriodSelector'
 import Counters from '../components/Counters'
 import Footer from '../components/Footer'
 import defaultPeriods from '../utils/defaultPeriods';
-import Highchart from '../components/Highchart';
+import Chart from '../components/Chart';
 
 class App extends Component {
     constructor(props) {
@@ -45,6 +45,10 @@ class App extends Component {
         const { selectedPeriod, globalStats, stats, isFetching } = this.props;
         // sample config
         const config = {
+            credits: false,
+            chart: {
+                type: 'bar'
+            },
             title: {
                 text: 'Fruit Consumption'
             },
@@ -61,18 +65,25 @@ class App extends Component {
                 data: [1, 0, 4]
             }, {
                 name: 'John',
-                data: [5, 7, 3]
+                data: [5, 7, 1]
             }]
         };
+
         return (
             <div>
                 <Header />
                 <PeriodSelector selectedPeriod={selectedPeriod} onPeriodSelect={this.onPeriodSelect} />
+
                 {isFetching && 
                     <div>Loading...</div>
                 }
-                <Counters items={stats.get('totals')} />
-                <Highchart config={config} />
+                {!isFetching && 
+                    <div>
+                        <Counters items={stats.get('totals')} />
+                        <Chart config={config} />
+                    </div>
+                }
+
                 <Footer globalStats={globalStats} />
             </div>
         );
