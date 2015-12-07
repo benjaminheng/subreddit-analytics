@@ -57,7 +57,10 @@ function getUniqueCommenters(start, end) {
 function getGildedComments(start, end, limit=10) {
     const qb = Comments.query();
     qb.whereRaw(BETWEEN_QUERY, [start, end])
-    .where('gilded', '>', 0).orderBy('gilded', 'desc').limit(limit);
+    .where('gilded', '>', 0)
+    .orderBy('gilded', 'desc')
+    .orderBy('score', 'desc')
+    .limit(limit);
 
     return new Promise((resolve, reject) => {
         qb.then(result => {
@@ -69,7 +72,10 @@ function getGildedComments(start, end, limit=10) {
 function getGildedSubmissions(start, end, limit=10) {
     const qb = Submissions.query();
     qb.whereRaw(BETWEEN_QUERY, [start, end])
-    .where('gilded', '>', 0).orderBy('gilded', 'desc').limit(limit);
+    .where('gilded', '>', 0)
+    .orderBy('gilded', 'desc')
+    .orderBy('score', 'desc')
+    .limit(limit);
 
     return new Promise((resolve, reject) => {
         qb.then(result => {
