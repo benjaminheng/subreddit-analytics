@@ -7,6 +7,7 @@ import PeriodSelector from '../components/PeriodSelector'
 import Counters from '../components/Counters'
 import Footer from '../components/Footer'
 import defaultPeriods from '../utils/defaultPeriods';
+import Highchart from '../components/Highchart';
 
 class App extends Component {
     constructor(props) {
@@ -42,6 +43,27 @@ class App extends Component {
 
     render() {
         const { selectedPeriod, globalStats, stats, isFetching } = this.props;
+        // sample config
+        const config = {
+            title: {
+                text: 'Fruit Consumption'
+            },
+            xAxis: {
+                categories: ['Apples', 'Bananas', 'Oranges']
+            },
+            yAxis: {
+                title: {
+                    text: 'Fruit eaten'
+                }
+            },
+            series: [{
+                name: 'Jane',
+                data: [1, 0, 4]
+            }, {
+                name: 'John',
+                data: [5, 7, 3]
+            }]
+        };
         return (
             <div>
                 <Header />
@@ -50,6 +72,7 @@ class App extends Component {
                     <div>Loading...</div>
                 }
                 <Counters items={stats.get('totals')} />
+                <Highchart config={config} />
                 <Footer globalStats={globalStats} />
             </div>
         );
