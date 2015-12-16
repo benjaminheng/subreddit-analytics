@@ -1,11 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-
-if (typeof window !== 'undefined') {
-    // Use exports-loader to get the HighchartsAdapter variable out of the 
-    // package since it doesn't export the variable as per CommonJS convention
-    global.HighchartsAdapter = require('exports?HighchartsAdapter!highcharts-release/adapters/standalone-framework.js');
-    require('highcharts-release/highcharts.js');
-}
+import Highcharts from 'highcharts';
 
 export default class Chart extends Component {
     constructor(props) {
@@ -24,16 +18,14 @@ export default class Chart extends Component {
     }
 
     renderChart(config) {
-        if (typeof window !== 'undefined') {
-            const chartConfig = config.chart;
-            this.chart = new Highcharts['Chart']({
-                ...config,
-                chart: {
-                    ...chartConfig,
-                    renderTo: this.refs.chart
-                }
-            });
-        }
+        const chartConfig = config.chart;
+        this.chart = new Highcharts['Chart']({
+            ...config,
+            chart: {
+                ...chartConfig,
+                renderTo: this.refs.chart
+            }
+        });
     }
 
     render() {
