@@ -43,31 +43,6 @@ class App extends Component {
 
     render() {
         const { selectedPeriod, globalStats, stats, isFetching } = this.props;
-        // sample config
-        const config = {
-            credits: false,
-            chart: {
-                type: 'bar'
-            },
-            title: {
-                text: 'Fruit Consumption'
-            },
-            xAxis: {
-                categories: ['Apples', 'Bananas', 'Oranges']
-            },
-            yAxis: {
-                title: {
-                    text: 'Fruit eaten'
-                }
-            },
-            series: [{
-                name: 'Jane',
-                data: [1, 0, 4]
-            }, {
-                name: 'John',
-                data: [5, 7, 1]
-            }]
-        };
 
         return (
             <div>
@@ -80,7 +55,6 @@ class App extends Component {
                 {!isFetching && 
                     <div>
                         <Counters items={stats.get('totals')} />
-                        <Chart config={config} />
                     </div>
                 }
 
