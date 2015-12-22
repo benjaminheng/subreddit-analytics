@@ -7,6 +7,7 @@ import PeriodSelector from '../components/PeriodSelector'
 import Counters from '../components/Counters'
 import Footer from '../components/Footer'
 import defaultPeriods from '../utils/defaultPeriods';
+import Chart from '../components/Chart';
 
 class App extends Component {
     constructor(props) {
@@ -42,14 +43,21 @@ class App extends Component {
 
     render() {
         const { selectedPeriod, globalStats, stats, isFetching } = this.props;
+
         return (
             <div>
                 <Header />
                 <PeriodSelector selectedPeriod={selectedPeriod} onPeriodSelect={this.onPeriodSelect} />
+
                 {isFetching && 
                     <div>Loading...</div>
                 }
-                <Counters items={stats.get('totals')} />
+                {!isFetching && 
+                    <div>
+                        <Counters items={stats.get('totals')} />
+                    </div>
+                }
+
                 <Footer globalStats={globalStats} />
             </div>
         );
