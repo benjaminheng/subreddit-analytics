@@ -54,6 +54,40 @@ function getUniqueCommenters(start, end) {
     });
 }
 
+function getTopCommentersByPosts(start, end, limit=10) {
+    const qb = Comments.query();
+    // SELECT count(*), author FROM comment WHERE <BETWEEN_QUERY>
+    // GROUP BY author ORDER BY count(*) DESC LIMIT <LIMIT>
+    qb.select(bookshelf.knex.raw('author, count(*)'))
+    .from('comment')
+    .whereRaw(BETWEEN_QUERY, [start, end])
+    .groupBy('author')
+    .orderBy(bookshelf.knex.raw('count(*)'), 'desc')
+    .limit(limit);
+
+    return new Promise((resolve, reject) => {
+        qb.then(result => {
+            resolve(result);
+        });
+    });
+}
+
+function getTopCommentersByScore(start, end, limit=10) {
+    const qb = Comments.query();
+    qb.select(bookshelf.knex.raw('author, sum(score) as count'))
+    .from('comment')
+    .whereRaw(BETWEEN_QUERY, [start, end])
+    .groupBy('author')
+    .orderBy(bookshelf.knex.raw('sum(score)'), 'desc')
+    .limit(limit);
+
+    return new Promise((resolve, reject) => {
+        qb.then(result => {
+            resolve(result);
+        });
+    });
+}
+
 function getGildedComments(start, end, limit=10) {
     const qb = Comments.query();
     qb.whereRaw(BETWEEN_QUERY, [start, end])
