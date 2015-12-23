@@ -88,6 +88,66 @@ function getTopCommentersByScore(start, end, limit=10) {
     });
 }
 
+function getCommentDistributionByTime(start, end) {
+    /* SELECT date_part('hour', datehour) AS hour, FLOOR(AVG(count)) AS count 
+     * FROM (
+     *  SELECT date_trunc('hour', posted) AS datehour, count(*) AS count 
+     *  FROM comment 
+     *  WHERE posted > (now() - $1::interval) 
+     *  GROUP BY date_trunc('hour', posted)
+     * ) as temp
+     * GROUP BY date_part('hour', datehour) 
+     * ORDER BY date_part('hour', datehour)
+     */
+    const qb = Comments.query();
+    qb.select(bookshelf.knex.raw("date_part('hour', datehour), floor(avg(count)) as count"))
+    .from(function() {
+        this.select(bookshelf.knex.raw("date_trunc('hour', posted) as datehour, count(*) as count"))
+        .from('comment')
+        .whereRaw(BETWEEN_QUERY, [start, end])
+        .groupBy(bookshelf.knex.raw("date_trunc('hour', posted)"))
+        .as('temp');
+    })
+    .groupBy(bookshelf.knex.raw("date_part('hour', datehour)"))
+    .orderBy(bookshelf.knex.raw("date_part('hour', datehour)"));
+
+    return new Promise((resolve, reject) => {
+        qb.then(result => {
+            resolve(result);
+        });
+    });
+}
+
+function getCommentDistributionByDay(start, end) {
+    /* SELECT date_part('dow', dateday) AS day, FLOOR(AVG(count)) AS count 
+     * FROM (
+     *  SELECT date(posted) as dateday, count(*) AS count 
+     *  FROM comment 
+     *  WHERE posted > (now() - $1::interval) 
+     *  GROUP BY date(posted)
+     * ) as temp 
+     * GROUP BY date_part('dow', dateday) 
+     * ORDER BY date_part('dow', dateday) 
+     */
+    const qb = Comments.query();
+    qb.select(bookshelf.knex.raw("date_part('dow', dateday) AS day, FLOOR(AVG(count)) AS count"))
+    .from(function() {
+        this.select(bookshelf.knex.raw("date(posted) as dateday, count(*) AS count"))
+        .from('comment')
+        .whereRaw(BETWEEN_QUERY, [start, end])
+        .groupBy(bookshelf.knex.raw("date(posted)"))
+        .as('temp');
+    })
+    .groupBy(bookshelf.knex.raw("date_part('dow', dateday)"))
+    .orderBy(bookshelf.knex.raw("date_part('dow', dateday)"));
+
+    return new Promise((resolve, reject) => {
+        qb.then(result => {
+            resolve(result);
+        });
+    });
+}
+
 function getGildedComments(start, end, limit=10) {
     const qb = Comments.query();
     qb.whereRaw(BETWEEN_QUERY, [start, end])
