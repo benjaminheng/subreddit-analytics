@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fromJS } from 'immutable';
+import { fromJS, List } from 'immutable';
 import { selectPeriod, addPeriod, fetchGlobalStats, fetchStatsIfNeeded } from '../actions';
 import Header from '../components/Header'
 import PeriodSelector from '../components/PeriodSelector'
@@ -8,6 +8,7 @@ import Counters from '../components/Counters'
 import Footer from '../components/Footer'
 import defaultPeriods from '../utils/defaultPeriods';
 import Chart from '../components/Chart';
+import chartConfig from '../utils/chartConfig';
 
 class App extends Component {
     constructor(props) {
@@ -43,6 +44,8 @@ class App extends Component {
 
     render() {
         const { selectedPeriod, globalStats, stats, isFetching } = this.props;
+        const topByScore = chartConfig.topCommentersByScore(stats.getIn(['topCommenters', 'score'], List()));
+        const topByPosts = chartConfig.topCommentersByPosts(stats.getIn(['topCommenters', 'posts'], List()));
 
         return (
             <div>
@@ -55,6 +58,8 @@ class App extends Component {
                 {!isFetching && 
                     <div>
                         <Counters items={stats.get('totals')} />
+                        <Chart config={topByScore} />
+                        <Chart config={topByPosts} />
                     </div>
                 }
 
