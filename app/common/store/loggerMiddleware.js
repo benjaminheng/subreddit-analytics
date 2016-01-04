@@ -3,7 +3,7 @@ import Immutable from 'immutable';
 
 const logger = createLogger({
     collapsed: true,
-    transformer: state => {
+    stateTransformer: state => {
         var newState = {};
         Object.keys(state).forEach(key => {
             if (Immutable.Iterable.isIterable(state[key])) {

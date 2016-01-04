@@ -8,10 +8,16 @@ router.get('/stats', function(req, res) {
     const start = req.query.start;
     const end = req.query.end;
     Promise.all([
-        database.getTotalStats(start, end)
+        database.getTotalStats(start, end),
+        database.getTopCommenters(start, end),
+        database.getCommentDistribution(start, end),
+        database.getGilded(start, end)
     ]).then(results => {
         res.json({
-            totals: results[0]
+            totals: results[0],
+            topCommenters: results[1],
+            distribution: results[2],
+            gilded: results[3]
         });
     }).catch(err => {
         console.log('[Error] GET /stats -> ' + err);

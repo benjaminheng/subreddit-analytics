@@ -54,7 +54,7 @@ function getUniqueCommenters(start, end) {
     });
 }
 
-function getTopCommentersByPosts(start, end, limit=10) {
+function getTopCommentersByPosts(start, end, limit) {
     const qb = Comments.query();
     // SELECT count(*), author FROM comment WHERE <BETWEEN_QUERY>
     // GROUP BY author ORDER BY count(*) DESC LIMIT <LIMIT>
@@ -72,7 +72,7 @@ function getTopCommentersByPosts(start, end, limit=10) {
     });
 }
 
-function getTopCommentersByScore(start, end, limit=10) {
+function getTopCommentersByScore(start, end, limit) {
     const qb = Comments.query();
     qb.select(bookshelf.knex.raw('author, sum(score) as count'))
     .from('comment')
@@ -88,6 +88,7 @@ function getTopCommentersByScore(start, end, limit=10) {
     });
 }
 
+// Comment distribution by hour of day
 function getCommentDistributionByTime(start, end) {
     /* SELECT date_part('hour', datehour) AS hour, FLOOR(AVG(count)) AS count 
      * FROM (
@@ -100,7 +101,7 @@ function getCommentDistributionByTime(start, end) {
      * ORDER BY date_part('hour', datehour)
      */
     const qb = Comments.query();
-    qb.select(bookshelf.knex.raw("date_part('hour', datehour), floor(avg(count)) as count"))
+    qb.select(bookshelf.knex.raw("date_part('hour', datehour) as hour, floor(avg(count)) as count"))
     .from(function() {
         this.select(bookshelf.knex.raw("date_trunc('hour', posted) as datehour, count(*) as count"))
         .from('comment')
@@ -118,6 +119,7 @@ function getCommentDistributionByTime(start, end) {
     });
 }
 
+// Comment distribution by day of week
 function getCommentDistributionByDay(start, end) {
     /* SELECT date_part('dow', dateday) AS day, FLOOR(AVG(count)) AS count 
      * FROM (
@@ -148,7 +150,7 @@ function getCommentDistributionByDay(start, end) {
     });
 }
 
-function getGildedComments(start, end, limit=10) {
+function getGildedComments(start, end, limit) {
     const qb = Comments.query();
     qb.whereRaw(BETWEEN_QUERY, [start, end])
     .where('gilded', '>', 0)
@@ -163,7 +165,7 @@ function getGildedComments(start, end, limit=10) {
     });
 }
 
-function getGildedSubmissions(start, end, limit=10) {
+function getGildedSubmissions(start, end, limit) {
     const qb = Submissions.query();
     qb.whereRaw(BETWEEN_QUERY, [start, end])
     .where('gilded', '>', 0)
@@ -174,6 +176,54 @@ function getGildedSubmissions(start, end, limit=10) {
     return new Promise((resolve, reject) => {
         qb.then(result => {
             resolve(result);
+        });
+    });
+}
+
+export function getTopCommenters(start, end, limit=10) {
+    return new Promise((resolve, reject) => {
+        Promise.all([
+            getTopCommentersByPosts(start, end, limit),
+            getTopCommentersByScore(start, end, limit)
+        ]).then(values => {
+            resolve({
+                posts: values[0],
+                score: values[1]
+            });
+        }).catch(err => {
+            console.log('[Error] api.getTopCommenters -> ' + err);
+        });
+    });
+}
+
+export function getCommentDistribution(start, end) {
+    return new Promise((resolve, reject) => {
+        Promise.all([
+            getCommentDistributionByTime(start, end),
+            getCommentDistributionByDay(start, end)
+        ]).then(values => {
+            resolve({
+                hour: values[0],
+                dayOfWeek: values[1]
+            });
+        }).catch(err => {
+            console.log('[Error] api.getCommentDistribution -> ' + err);
+        });
+    });
+}
+
+export function getGilded(start, end, limit=10) {
+    return new Promise((resolve, reject) => {
+        Promise.all([
+            getGildedSubmissions(start, end, limit),
+            getGildedComments(start, end, limit)
+        ]).then(values => {
+            resolve({
+                submissions: values[0],
+                comments: values[1]
+            });
+        }).catch(err => {
+            console.log('[Error] api.getGilded -> ' + err);
         });
     });
 }
