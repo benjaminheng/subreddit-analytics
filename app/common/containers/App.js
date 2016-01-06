@@ -44,7 +44,10 @@ class App extends Component {
     }
 
     render() {
-        const { selectedPeriod, globalStats, stats, isFetching } = this.props;
+        const { selectedPeriod, periodRange, globalStats, stats, isFetching } = this.props;
+
+        const distributionDayConfig = chartConfig.commentDistributionByDay(stats.getIn(['distribution', 'dayOfWeek'], List()));
+        const distributionHourConfig = chartConfig.commentDistributionByHour(stats.getIn(['distribution', 'hour'], List()));
 
         return (
             <div>
@@ -58,6 +61,10 @@ class App extends Component {
                     <div>
                         <Counters items={stats.get('totals')} />
                         <TopCommenters data={stats.get('topCommenters', Map())} />
+                        {periodRange >= 604800 &&   // >= 7 days
+                            <Chart config={distributionDayConfig} />
+                        }
+                        <Chart config={distributionHourConfig} />
                     </div>
                 }
 
@@ -74,9 +81,10 @@ function select(state) {
     const stats = statsByPeriod.getIn([selectedPeriod, 'stats'], fromJS({
         totals: {}
     }))
+    const periodRange = periods.getIn([selectedPeriod, 'end']) - periods.getIn([selectedPeriod, 'start']);
 
     return {
-        selectedPeriod, stats, isFetching, globalStats
+        selectedPeriod, periodRange, stats, isFetching, globalStats
     };
 }
 
