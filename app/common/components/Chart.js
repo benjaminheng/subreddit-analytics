@@ -10,11 +10,15 @@ export default class Chart extends Component {
         this.renderChart(this.props.config);
     }
 
-    shouldComponentUpdate(nextProps) {
-        if (this.props.config !== nextProps.config) {
+    componentWillUpdate(nextProps) {
+        if (this.props.softUpdate) {
+            this.chart.series[0].setData(nextProps.config.series[0].data);
+            this.chart.axes[0].update(nextProps.config.xAxis);
+            this.chart.axes[1].update(nextProps.config.yAxis);
+            this.chart.setTitle(nextProps.config.title);
+        } else {
             this.renderChart(nextProps.config);
         }
-        return true;
     }
 
     renderChart(config) {
@@ -41,5 +45,10 @@ export default class Chart extends Component {
 }
 
 Chart.propTypes = {
-    config: PropTypes.object.isRequired
+    config: PropTypes.object.isRequired,
+    softUpdate: PropTypes.bool
+}
+
+Chart.defaultProps = {
+    softUpdate: true
 }
