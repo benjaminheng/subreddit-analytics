@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import Highcharts from 'highcharts';
+import { is, fromJS } from 'immutable';
 
 export default class Chart extends Component {
     constructor(props) {
@@ -11,14 +12,22 @@ export default class Chart extends Component {
     }
 
     componentWillUpdate(nextProps) {
-        if (this.props.softUpdate) {
-            this.chart.xAxis[0].update(nextProps.config.xAxis, false);
-            this.chart.yAxis[0].update(nextProps.config.yAxis, false);
-            this.chart.series[0].setData(nextProps.config.series[0].data, false);
-            this.chart.setTitle(nextProps.config.title, nextProps.config.subtitle, false);
-            this.chart.redraw();
-        } else {
-            this.renderChart(nextProps.config);
+        // There is a bug that causes multiple redraws to speed up the draw
+        // animation during the initial page load. The following `props.config`
+        // comparison is a hack to work around it. We need to remove the _colorIndex
+        // property injected by the Highcharts render, then use the Immutable 
+        // class as a convenient way to perform a deep comparison.
+        delete this.props.config.series[0]._colorIndex;
+        if (!is(fromJS(this.props.config), fromJS(nextProps.config))) {
+            if (this.props.softUpdate) {
+                this.chart.xAxis[0].update(nextProps.config.xAxis, false);
+                this.chart.yAxis[0].update(nextProps.config.yAxis, false);
+                this.chart.series[0].setData(nextProps.config.series[0].data, false);
+                this.chart.setTitle(nextProps.config.title, nextProps.config.subtitle, false);
+                this.chart.redraw();
+            } else {
+                this.renderChart(nextProps.config);
+            }
         }
     }
 
