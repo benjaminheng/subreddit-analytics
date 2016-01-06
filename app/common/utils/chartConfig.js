@@ -1,4 +1,5 @@
 import { Iterable } from 'immutable';
+
 var generalConfig = {
     credits: false,
     legend: {
@@ -33,45 +34,7 @@ function bar(title, xTitle, yTitle, seriesName, categories, datapoints) {
     return config;
 }
 
-function topCommentersByScore(data) {
-    if (Iterable.isIterable(data)) {
-        data = data.toJS();
-    }
-    let config = Object.assign({}, generalConfig);
-    let categories = [];
-    let datapoints = [];
-    data.map(item => {
-        categories.push(item.author);
-        datapoints.push(-parseInt(item.count));
-    });
-
-    let options = bar('By karma', '', 'Score', 'Score', categories, datapoints);
-    options = {
-        ...options,
-        yAxis: {
-            ...options.yAxis,
-            labels: {
-                formatter: function() {
-                    return Math.abs(this.value);
-                }
-            }
-        },
-        plotOptions: {
-            series: {
-                tooltip: {
-                    pointFormatter: function() {
-                        const value = Math.abs(this.y);
-                        return `<span style="color:${this.color}">\u25CF</span> ${this.series.name}: <b>${value}</b><br/>`
-                    }
-                }
-            }
-        }
-    }
-    Object.assign(config, options);
-    return config
-}
-
-function topCommentersByPosts(data) {
+function topCommenters(title, xTitle, yTitle, seriesName, data) {
     if (Iterable.isIterable(data)) {
         data = data.toJS();
     }
@@ -82,17 +45,17 @@ function topCommentersByPosts(data) {
         categories.push(item.author);
         datapoints.push(parseInt(item.count));
     });
-
-    let options = bar('By posts', '', 'Posts', 'Posts', categories, datapoints);
-    options = {
-        ...options,
-        xAxis: {
-            ...options.xAxis,
-            opposite: true
-        }
-    }
+    let options = bar(title, xTitle, yTitle, seriesName, categories, datapoints);
     Object.assign(config, options);
     return config
+}
+
+function topCommentersByScore(data) {
+    return topCommenters('By karma', '', 'Karma', 'Karma', data);
+}
+
+function topCommentersByPosts(data) {
+    return topCommenters('By posts', '', 'Posts', 'Posts', data);
 }
 
 export default {
