@@ -12,10 +12,11 @@ export default class Chart extends Component {
 
     componentWillUpdate(nextProps) {
         if (this.props.softUpdate) {
-            this.chart.series[0].setData(nextProps.config.series[0].data);
-            this.chart.axes[0].update(nextProps.config.xAxis);
-            this.chart.axes[1].update(nextProps.config.yAxis);
-            this.chart.setTitle(nextProps.config.title);
+            this.chart.xAxis[0].update(nextProps.config.xAxis, false);
+            this.chart.yAxis[0].update(nextProps.config.yAxis, false);
+            this.chart.series[0].setData(nextProps.config.series[0].data, false);
+            this.chart.setTitle(nextProps.config.title, nextProps.config.subtitle, false);
+            this.chart.redraw();
         } else {
             this.renderChart(nextProps.config);
         }
