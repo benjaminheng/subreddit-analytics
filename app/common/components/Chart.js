@@ -12,12 +12,7 @@ export default class Chart extends Component {
     }
 
     componentWillUpdate(nextProps) {
-        // There is a bug that causes multiple redraws to speed up the draw
-        // animation during the initial page load. The following `props.config`
-        // comparison is a hack to work around it. We need to remove the _colorIndex
-        // property injected by the Highcharts render, then use the Immutable 
-        // class as a convenient way to perform a deep comparison.
-        delete this.props.config.series[0]._colorIndex;
+        // Convenient way to deep compare two objects
         if (!is(fromJS(this.props.config), fromJS(nextProps.config))) {
             if (this.props.softUpdate) {
                 this.chart.xAxis[0].update(nextProps.config.xAxis, false);
@@ -32,11 +27,12 @@ export default class Chart extends Component {
     }
 
     renderChart(config) {
-        const chartConfig = config.chart;
+        // Convenient way to deep clone an object.
+        const clone = fromJS(config).toJS();
         this.chart = new Highcharts['Chart']({
-            ...config,
+            ...clone,
             chart: {
-                ...chartConfig,
+                ...clone.chart,
                 renderTo: this.refs.chart
             }
         });
