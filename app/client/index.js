@@ -1,15 +1,16 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
-import { createHistory } from 'history'
-import { syncReduxAndRouter } from 'redux-simple-router'
-import { Router, Route, IndexRoute } from 'react-router'
-import configureStore from '../common/store/configureStore'
+import { createHistory } from 'history';
+import { syncReduxAndRouter } from 'redux-simple-router';
+import { Router, Route, IndexRoute } from 'react-router';
+import configureStore from '../common/store/configureStore';
 import App from '../common/containers/App';
 import Home from '../common/containers/Home';
 import Users from '../common/containers/users/Users';
 import UserIndex from '../common/containers/users/UserIndex';
 import User from '../common/containers/users/User';
+import NotFound from '../common/containers/NotFound';
 
 require('../common/stylesheets/main.scss');
 
@@ -31,6 +32,7 @@ render(
                     <IndexRoute component={UserIndex} />
                     <Route path="/user/:username" component={User} />
                 </Route>
+                <Route path="*" component={NotFound} />
             </Route>
         </Router>
     </Provider>,
