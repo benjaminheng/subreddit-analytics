@@ -21,6 +21,7 @@
     "dateformat": "^1.0.12",
     "express": "^4.13.3",
     "highcharts": "^4.2.0",
+    "history": "^1.17.0",
     "immutable": "^3.7.5",
     "isomorphic-fetch": "^2.1.1",
     "knex": "^0.8.6",
@@ -28,7 +29,9 @@
     "react": "^0.14.0",
     "react-dom": "^0.14.0",
     "react-redux": "^4.0.0",
+    "react-router": "^1.0.3",
     "redux": "^3.0.2",
+    "redux-simple-router": "^1.0.2",
     "redux-thunk": "^1.0.0"
   },
   "devDependencies": {

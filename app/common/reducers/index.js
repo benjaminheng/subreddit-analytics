@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import { routeReducer as routing } from 'redux-simple-router'
 import selectedPeriod from './selectedPeriod';
 import periods from './periods';
 import statsByPeriod from './statsByPeriod';
@@ -8,7 +9,8 @@ const rootReducer = combineReducers({
     selectedPeriod,
     statsByPeriod,
     periods,
-    globalStats
+    globalStats,
+    routing
 });
 
 export default rootReducer;

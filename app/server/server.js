@@ -21,7 +21,7 @@ const publicPath = path.join(__dirname, '..', '..', 'dist');
 app.use(Express.static(publicPath));
 
 app.use('/api', apiRoutes);
-app.get("/", function(req, res) {
+app.get("*", function(req, res) {
     res.sendFile(__dirname + '/index.html');
 });
 
