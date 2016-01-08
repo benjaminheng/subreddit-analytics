@@ -61,9 +61,14 @@ function commentDistributionByHour(data) {
     return buildConfig('column', 'Comment distribution by hour', '', 'Comments', 'Comments', 'hour', 'count', data);
 }
 
+function commentsPerMonth(data) {
+    return buildConfig('column', 'Comments per month', '', 'Comments', 'Comments', 'month', 'count', data);
+}
+
 export default {
     topCommentersByScore,
     topCommentersByPosts,
     commentDistributionByDay,
-    commentDistributionByHour
+    commentDistributionByHour,
+    commentsPerMonth
 }

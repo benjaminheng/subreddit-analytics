@@ -25,7 +25,6 @@ class Home extends Component {
     }
 
     componentDidMount() {
-        const { dispatch } = this.props;
         this.initializeDefaultPeriod();
     }
 
@@ -47,6 +46,7 @@ class Home extends Component {
 
         const distributionDayConfig = chartConfig.commentDistributionByDay(stats.getIn(['distribution', 'dayOfWeek'], List()));
         const distributionHourConfig = chartConfig.commentDistributionByHour(stats.getIn(['distribution', 'hour'], List()));
+        const commentsPerMonthConfig = chartConfig.commentsPerMonth(stats.get('commentsPerMonth', List()));
 
         return (
             <div>
@@ -63,6 +63,9 @@ class Home extends Component {
                             <Chart config={distributionDayConfig} />
                         }
                         <Chart config={distributionHourConfig} />
+                        {selectedPeriod === 'all time' &&
+                            <Chart config={commentsPerMonthConfig} />
+                        }
                     </div>
                 }
             </div>
