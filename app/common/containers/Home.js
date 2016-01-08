@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fromJS, List, Map } from 'immutable';
 import { selectPeriod, addPeriod, fetchStatsIfNeeded } from '../actions';
-import Header from '../components/Header'
-import PeriodSelector from '../components/PeriodSelector'
-import Counters from '../components/Counters'
-import Footer from '../components/Footer'
-import TopCommenters from '../components/TopCommenters'
+import Header from '../components/Header';
+import PeriodSelector from '../components/PeriodSelector';
+import Counters from '../components/Counters';
+import Footer from '../components/Footer';
+import TopCommenters from '../components/TopCommenters';
+import PostList from '../components/PostList';
 import defaultPeriods from '../utils/defaultPeriods';
 import Chart from '../components/Chart';
 import chartConfig from '../utils/chartConfig';
@@ -59,6 +60,7 @@ class Home extends Component {
                     <div>
                         <Counters items={stats.get('totals', Map())} />
                         <TopCommenters data={stats.get('topCommenters', Map())} />
+                        { /*<PostList posts={stats.getIn(['gilded', 'posts'], List())} />*/ }
                         {periodRange >= 604800 &&   // >= 7 days
                             <Chart config={distributionDayConfig} />
                         }

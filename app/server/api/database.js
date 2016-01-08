@@ -255,9 +255,28 @@ export function getGilded(start, end, limit=10) {
             getGildedSubmissions(start, end, limit),
             getGildedComments(start, end, limit)
         ]).then(values => {
+            let submissions = values[0];
+            let comments = values[1];
+            submissions.map(item => item.type = 'submission');
+            comments.map(item => item.type = 'comment');
+            let posts = submissions.concat(comments);
+            // sort descending according to gilded then score
+            posts.sort((a, b) => {
+                if (a.gilded > b.gilded) {
+                    return -1;
+                } else if (a.gilded < b.gilded) {
+                    return 1;
+                } else if (a.score > b.score) {
+                    return -1;
+                } else if (a.score < b.score) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            });
+            posts = posts.slice(0, limit);
             resolve({
-                submissions: values[0],
-                comments: values[1]
+                posts: posts
             });
         }).catch(err => {
             console.log('[Error] api.getGilded -> ' + err);
