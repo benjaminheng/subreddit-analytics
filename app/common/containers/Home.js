@@ -55,9 +55,9 @@ class Home extends Component {
                 {isFetching && 
                     <div>Loading...</div>
                 }
-                {!isFetching && 
+                {!isFetching && !stats.isEmpty() && 
                     <div>
-                        <Counters items={stats.get('totals')} />
+                        <Counters items={stats.get('totals', Map())} />
                         <TopCommenters data={stats.get('topCommenters', Map())} />
                         {periodRange >= 604800 &&   // >= 7 days
                             <Chart config={distributionDayConfig} />
@@ -77,9 +77,7 @@ function select(state) {
     const { selectedPeriod, periods, statsByPeriod } = state;
 
     const isFetching = statsByPeriod.getIn([selectedPeriod, 'isFetching']);
-    const stats = statsByPeriod.getIn([selectedPeriod, 'stats'], fromJS({
-        totals: {}
-    }))
+    const stats = statsByPeriod.getIn([selectedPeriod, 'stats'], Map());
     const periodRange = periods.getIn([selectedPeriod, 'end']) - periods.getIn([selectedPeriod, 'start']);
 
     return {
