@@ -192,6 +192,26 @@ function getGildedSubmissions(start, end, limit) {
     });
 }
 
+// Total comments per month
+function getCommentsPerMonth(start, end) {
+    /* select date_trunc('month', posted) as order, 
+     *  to_char(date_trunc('month', posted), 'Mon-YYYY') as month, 
+     *  count(*) 
+     * from comment
+     * group by date_trunc('month', posted);
+     */
+    const qb = Comments.query();
+    qb.select(bookshelf.knex.raw("date_trunc('month', posted) as order, to_char(date_trunc('month', posted), 'Mon-YYYY') as month, count(*)"))
+    .groupBy(bookshelf.knex.raw("date_trunc('month', posted)"))
+    .orderBy(bookshelf.knex.raw("date_trunc('month', posted)"));
+
+    return new Promise((resolve, reject) => {
+        qb.then(result => {
+            resolve(result);
+        });
+    });
+}
+
 export function getTopCommenters(start, end, limit=10) {
     return new Promise((resolve, reject) => {
         Promise.all([
