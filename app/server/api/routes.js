@@ -11,13 +11,15 @@ router.get('/stats', function(req, res) {
         database.getTotalStats(start, end),
         database.getTopCommenters(start, end),
         database.getCommentDistribution(start, end),
-        database.getGilded(start, end)
+        database.getGilded(start, end),
+        database.getCommentsPerMonth(start, end)
     ]).then(results => {
         res.json({
             totals: results[0],
             topCommenters: results[1],
             distribution: results[2],
-            gilded: results[3]
+            gilded: results[3],
+            commentsPerMonth: results[4]
         });
     }).catch(err => {
         console.log('[Error] GET /stats -> ' + err);

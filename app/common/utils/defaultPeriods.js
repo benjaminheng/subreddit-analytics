@@ -16,6 +16,10 @@ const defaultPeriods = {
     '1 year': {
         start: date.minus(date.now(), 365, 'days'),
         end: date.now()
+    },
+    'all time': {
+        start: 0,
+        end: date.now()
     }
 }
 

@@ -193,13 +193,18 @@ function getGildedSubmissions(start, end, limit) {
 }
 
 // Total comments per month
-function getCommentsPerMonth(start, end) {
+export function getCommentsPerMonth(start, end) {
     /* select date_trunc('month', posted) as order, 
      *  to_char(date_trunc('month', posted), 'Mon-YYYY') as month, 
      *  count(*) 
      * from comment
      * group by date_trunc('month', posted);
      */
+    // If period is not 'all time', don't query the database
+    if (parseInt(start) !== 0) {
+        return new Promise((resolve, reject) => resolve([]));
+    }
+
     const qb = Comments.query();
     qb.select(bookshelf.knex.raw("date_trunc('month', posted) as order, to_char(date_trunc('month', posted), 'Mon-YYYY') as month, count(*)"))
     .groupBy(bookshelf.knex.raw("date_trunc('month', posted)"))
