@@ -1,0 +1,9 @@
+#root {
+    height: 100%;
+}
+
+.app-wrapper {
+    min-height: 100%;
+    position: relative;
+    padding-bottom: 165px; // manually calculated: height of footer + spacing-unit*2
+}

@@ -17,7 +17,7 @@ class App extends Component {
     render() {
         const { globalStats } = this.props;
         return (
-            <div>
+            <div className='app-wrapper'>
                 <Header />
                 {this.props.children}
                 <Footer globalStats={globalStats} />

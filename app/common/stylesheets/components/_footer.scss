@@ -1,3 +1,14 @@
 .footer {
-    border-top: 1px solid #BBBBBB;
+    border-top: 1px solid #E0E0E0;
+    background-color: #FDFDFD;
+    text-align: center;
+    padding-bottom: $spacing-unit/3;
+    color: #888888;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+
+    .highlight {
+        color: $accent-color;
+    }
 }

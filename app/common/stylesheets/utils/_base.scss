@@ -1,8 +1,22 @@
+html {
+    box-sizing: border-box;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+
 body {
     color: $text-color;
     font-family: $base-font-family;
     font-size: $body-font-size;
     line-height: $line-height-ratio;
     background-color: $body-bg-color;
-    margin: 0;
 }

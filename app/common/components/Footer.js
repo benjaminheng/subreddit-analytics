@@ -7,11 +7,21 @@ export default class Footer extends Component {
         return (
             <div className='footer'>
                 <p>
-                    {globalStats.get('submissions')} submissions
-                    {', '}
-                    {globalStats.get('comments')} comments
-                    {', '}
-                    Since: {date.pretty(globalStats.get('earliestDate'))}
+                    <span>Collected </span>
+                    <span className='highlight'>
+                        {globalStats.get('submissions')} submissions
+                    </span> 
+                    <span> and </span>
+                    <span className='highlight'>
+                        {globalStats.get('comments')} comments
+                    </span> 
+                    <span> since </span>
+                    <span className='highlight'>
+                        {date.pretty(globalStats.get('earliestDate'))}
+                    </span> 
+                </p>
+                <p>
+                    <a href='https://github.com/benjaminheng/subreddit-analytics'>Source</a>
                 </p>
             </div>
         );
