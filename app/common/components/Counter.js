@@ -8,8 +8,9 @@ export default class Counter extends Component {
     render() {
         const { count, name } = this.props;
         return (
-            <div>
-                {name}: {count}
+            <div className='counter'>
+                <div className='counter-label'>{name}</div>
+                <div className='counter-count'>{count}</div>
             </div>
         );
     }

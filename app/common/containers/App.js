@@ -19,7 +19,9 @@ class App extends Component {
         return (
             <div className='app-wrapper'>
                 <Header />
-                {this.props.children}
+                <div className='content-wrapper'>
+                    {this.props.children}
+                </div>
                 <Footer globalStats={globalStats} />
             </div>
         );

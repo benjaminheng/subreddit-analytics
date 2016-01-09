@@ -1,0 +1,7 @@
+.card {
+    margin-bottom: $spacing-unit;
+    padding: $spacing-unit;
+    background-color: #FDFDFD;
+
+    @include box-shadow(1);
+}

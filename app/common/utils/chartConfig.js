@@ -1,6 +1,6 @@
 import { Iterable } from 'immutable';
 
-function configTemplate(type, title, xTitle, yTitle, seriesName, categories, datapoints) {
+function configTemplate(type, xTitle, yTitle, seriesName, categories, datapoints) {
     const config = {
         credits: false,
         legend: {
@@ -10,7 +10,7 @@ function configTemplate(type, title, xTitle, yTitle, seriesName, categories, dat
             type: type
         },
         title: {
-            text: title
+            text: ''
         },
         xAxis: {
             categories: categories,
@@ -31,7 +31,7 @@ function configTemplate(type, title, xTitle, yTitle, seriesName, categories, dat
     return config;
 }
 
-function buildConfig(type, title, xTitle, yTitle, seriesName, xKey, yKey, data) {
+function buildConfig(type, xTitle, yTitle, seriesName, xKey, yKey, data) {
     if (Iterable.isIterable(data)) {
         data = data.toJS();
     }
@@ -41,28 +41,28 @@ function buildConfig(type, title, xTitle, yTitle, seriesName, xKey, yKey, data) 
         categories.push(item[xKey]);
         datapoints.push(parseInt(item[yKey]));
     });
-    let config = configTemplate(type, title, xTitle, yTitle, seriesName, categories, datapoints);
+    let config = configTemplate(type, xTitle, yTitle, seriesName, categories, datapoints);
     return config
 }
 
 function topCommentersByScore(data) {
-    return buildConfig('bar', 'By karma', '', 'Karma', 'Karma', 'author', 'count', data);
+    return buildConfig('bar', '', 'Karma', 'Karma', 'author', 'count', data);
 }
 
 function topCommentersByPosts(data) {
-    return buildConfig('bar', 'By posts', '', 'Posts', 'Posts', 'author', 'count', data);
+    return buildConfig('bar', '', 'Posts', 'Posts', 'author', 'count', data);
 }
 
 function commentDistributionByDay(data) {
-    return buildConfig('column', 'Comment distribution by day of week', '', 'Comments', 'Comments', 'day', 'count', data);
+    return buildConfig('column', '', 'Comments', 'Comments', 'day', 'count', data);
 }
 
 function commentDistributionByHour(data) {
-    return buildConfig('column', 'Comment distribution by hour', '', 'Comments', 'Comments', 'hour', 'count', data);
+    return buildConfig('column', '', 'Comments', 'Comments', 'hour', 'count', data);
 }
 
 function commentsPerMonth(data) {
-    return buildConfig('column', 'Comments per month', '', 'Comments', 'Comments', 'month', 'count', data);
+    return buildConfig('column', '', 'Comments', 'Comments', 'month', 'count', data);
 }
 
 export default {

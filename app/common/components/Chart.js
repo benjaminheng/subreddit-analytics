@@ -18,7 +18,6 @@ export default class Chart extends Component {
                 this.chart.xAxis[0].update(nextProps.config.xAxis, false);
                 this.chart.yAxis[0].update(nextProps.config.yAxis, false);
                 this.chart.series[0].setData(nextProps.config.series[0].data, false);
-                this.chart.setTitle(nextProps.config.title, nextProps.config.subtitle, false);
                 this.chart.redraw();
             } else {
                 this.renderChart(nextProps.config);
@@ -39,8 +38,14 @@ export default class Chart extends Component {
     }
 
     render() {
+        let className = 'chart';
+        if (this.props.className) {
+            className += ' ' + this.props.className;
+        }
+
         const props = {
             ...this.props,
+            className: className,
             'ref': 'chart'
         };
 

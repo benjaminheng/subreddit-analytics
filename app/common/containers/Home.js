@@ -10,6 +10,7 @@ import TopCommenters from '../components/TopCommenters';
 import PostList from '../components/PostList';
 import defaultPeriods from '../utils/defaultPeriods';
 import Chart from '../components/Chart';
+import ChartCard from '../components/ChartCard';
 import chartConfig from '../utils/chartConfig';
 
 class Home extends Component {
@@ -42,6 +43,15 @@ class Home extends Component {
         dispatch(selectPeriod(period));
     }
 
+    getTitle() {
+        const { selectedPeriod } = this.props;
+        if (selectedPeriod === 'all time') {
+            return <h1 className='title'><span className='highlight'>All time</span> stats</h1>;
+        } else {
+            return <h1 className='title'>Stats for the past <span className='highlight'>{selectedPeriod}</span></h1>;
+        }
+    }
+
     render() {
         const { selectedPeriod, periodRange, stats, isFetching } = this.props;
 
@@ -50,7 +60,7 @@ class Home extends Component {
         const commentsPerMonthConfig = chartConfig.commentsPerMonth(stats.get('commentsPerMonth', List()));
 
         return (
-            <div>
+            <div className='home'>
                 <PeriodSelector selectedPeriod={selectedPeriod} onPeriodSelect={this.onPeriodSelect} />
 
                 {isFetching && 
@@ -58,15 +68,16 @@ class Home extends Component {
                 }
                 {!isFetching && !stats.isEmpty() && 
                     <div>
+                        {this.getTitle()}
                         <Counters items={stats.get('totals', Map())} />
                         <TopCommenters data={stats.get('topCommenters', Map())} />
                         { /*<PostList posts={stats.getIn(['gilded', 'posts'], List())} />*/ }
                         {periodRange >= 604800 &&   // >= 7 days
-                            <Chart config={distributionDayConfig} />
+                            <ChartCard title='Comment distribution by day of week' config={distributionDayConfig} />
                         }
-                        <Chart config={distributionHourConfig} />
+                        <ChartCard title='Comment distribution by hour of day' config={distributionHourConfig} />
                         {selectedPeriod === 'all time' &&
-                            <Chart config={commentsPerMonthConfig} />
+                            <ChartCard title='Total comments per month' config={commentsPerMonthConfig} />
                         }
                     </div>
                 }

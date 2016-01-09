@@ -1,0 +1,35 @@
+.counters {
+    text-align: center;
+}
+
+.counter {
+    text-align: center;
+    padding: 0px $spacing-unit;
+    font-weight: 600;
+
+    &:not(:last-child) {
+        padding-bottom: 10px;
+    }
+
+    .counter-label {
+        color: $accent-color;
+    }
+
+    .counter-count {
+        font-size: 2em;
+        transition: font 0.3s linear;
+
+        @include media-query($breakpoint-medium) {
+            font-size: 3em;
+        }
+    }
+
+    @include media-query($breakpoint-small) {
+        display: inline-block;
+
+        &:not(:last-child) {
+            padding-bottom: 0px;
+            border-right: 1px solid #E0E0E0;
+        }
+    }
+}

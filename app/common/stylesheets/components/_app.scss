@@ -7,3 +7,17 @@
     position: relative;
     padding-bottom: 165px; // manually calculated: height of footer + spacing-unit*2
 }
+
+.content-wrapper {
+    max-width: $content-width;
+    padding: 0px $spacing-unit;
+    margin: auto;
+}
+
+
+.home .title {
+    .highlight {
+        color: $accent-color;
+        text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
+    }
+}

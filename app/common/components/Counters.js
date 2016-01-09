@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import Counter from '../components/Counter'
+import Card from '../components/Card'
 
 export default class Counters extends Component {
     constructor(props) {
@@ -9,11 +10,11 @@ export default class Counters extends Component {
     render() {
         const { items } = this.props;
         return (
-            <div>
+            <Card className='counters'>
                 {items.keySeq().map(key => 
                     <Counter key={key} name={key} count={items.get(key)} />
                 )}
-            </div>
+            </Card>
         );
     }
 }
