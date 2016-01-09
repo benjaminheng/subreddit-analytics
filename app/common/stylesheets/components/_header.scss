@@ -1,0 +1,76 @@
+.header-wrapper {
+    margin-bottom: $spacing-unit * 2;
+}
+
+.header {
+    @include box-shadow(1);
+    position: relative;
+    background-color: #24243A;
+    color: #FCFCFC;
+    padding: $spacing-unit/2 0px;
+
+    .title, .subtitle {
+        text-align: center;
+    }
+
+    .title {
+        font-size: 2em;
+        text-shadow: 1px 2px 3px rgba(0, 0, 0, 1);
+        
+        a {
+            text-decoration: none;
+            color: none;
+
+            &:visited {
+                color: #FCFCFC;
+            }
+        }
+    }
+
+    .subtitle {
+        font-size: 1.1em;
+        font-weight: 400;
+        .subreddit {
+            color: $accent-color;
+        }
+    }
+}
+
+.navbar {
+    padding: 0px $spacing-unit;
+    line-height: 1;
+    background-color: #FFF;
+    border-bottom: 1px solid #E0E0E0;
+
+    ul {
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+
+        li {
+            display: inline-block;
+            margin-right: $spacing-unit;
+        }
+    }
+    
+    a {
+        display: inline-block;
+        color: #888888;
+        text-decoration: none;
+        padding: 12px 0px;
+
+        &.active {
+            color: $accent-color;
+            padding-bottom: 10px;
+            border-bottom: 2px solid $accent-color;
+
+            &:hover {
+                color: $accent-color;
+            }
+        }
+
+        &:hover {
+            color: #666;
+        }
+    }
+}

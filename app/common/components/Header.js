@@ -1,13 +1,28 @@
 import React, { Component, PropTypes } from 'react';
-import { Link } from 'react-router';
+import { Link, IndexLink } from 'react-router';
 
 export default class Header extends Component {
     render() {
         return (
-            <div>
-                <h1>/r/Singapore Stats</h1>
-                <Link to='/'>[SUBREDDIT]</Link>
-                <Link to='/users'>[USERS]</Link>
+            <div className='header-wrapper'>
+                <div className='header'>
+                    <div className='title'>
+                        <Link to='/'>Subreddit Analytics</Link>
+                    </div>
+                    <div className='subtitle'>
+                        Stats for <span className='subreddit'>/r/Singapore</span>
+                    </div>
+                </div>
+                <div className='navbar'>
+                    <ul>
+                        <li>
+                            <IndexLink to='/' activeClassName='active'>Home</IndexLink>
+                        </li>
+                        <li>
+                            <Link to='/users' activeClassName='active'>User Stats</Link>
+                        </li>
+                    </ul>
+                </div>
             </div>
         );
     }
