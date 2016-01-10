@@ -21,3 +21,25 @@
         text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
     }
 }
+
+.default-button {
+    padding: 7px 15px;
+    border: 0px;
+    border-radius: 3px;
+    border: 1px solid #BBB;
+    color: #909090;
+    background-color: transparent;
+    font-size: 1.1em;
+    cursor: pointer;
+
+    &.selected {
+        border: 1px solid $accent-color;
+        background-color: lighten($accent-color, 30%);
+        color: $accent-color;
+        @include box-shadow(1);
+    }
+
+    &:not(:last-child) {
+        margin-right: $spacing-unit/2;
+    }
+}

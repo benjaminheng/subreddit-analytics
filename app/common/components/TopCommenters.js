@@ -14,7 +14,8 @@ export default class TopCommenters extends Component {
         }
         this.state = {
             config: chartConfig.topCommentersByScore(data.get('score', List())),
-            title: this.titles.score
+            title: this.titles.score,
+            selected: 'score'
         }
     }
 
@@ -22,9 +23,9 @@ export default class TopCommenters extends Component {
     resetState(data) {
         this.setState({
             config: chartConfig.topCommentersByScore(data.get('score', List())),
-            title: this.titles.score
+            title: this.titles.score,
+            selected: 'score'
         });
-        this.refs.score.checked = true;
     }
 
     // resets the component when props change
@@ -40,13 +41,15 @@ export default class TopCommenters extends Component {
             case 'score':
                 this.setState({
                     config: chartConfig.topCommentersByScore(data.get('score', List())),
-                    title: this.titles.score
+                    title: this.titles.score,
+                    selected: 'score'
                 });
                 break;
             case 'posts':
                 this.setState({
                     config: chartConfig.topCommentersByPosts(data.get('posts', List())),
-                    title: this.titles.posts
+                    title: this.titles.posts,
+                    selected: 'posts'
                 });
                 break;
             default:
@@ -56,17 +59,15 @@ export default class TopCommenters extends Component {
 
     render() {
         const { data } = this.props;
+        const { selected } = this.state;
+        const scoreClass = 'default-button' + (selected === 'score' ? ' selected':'');
+        const postsClass = 'default-button' + (selected === 'posts' ? ' selected':'');
+
         return (
             <Card>
                 <h2>{this.state.title}</h2>
-                <label>
-                    <input ref='score' type='radio' name='order' onChange={e => this.onSelect('score')} defaultChecked></input> 
-                    By karma
-                </label>
-                <label>
-                    <input ref='posts' type='radio' name='order' onChange={e => this.onSelect('posts')}></input> 
-                    By posts
-                </label>
+                <button className={scoreClass} ref='score' onClick={e => this.onSelect('score')}>Karma</button> 
+                <button className={postsClass} ref='posts' onClick={e => this.onSelect('posts')}>Posts</button> 
                 <Chart className='top-commenters-chart' config={this.state.config} />
             </Card>
         );
