@@ -308,12 +308,14 @@ export function getGlobalStats() {
         Promise.all([
             getTotalSubmissions(0, currentTime),
             getTotalComments(0, currentTime),
-            getEarliestDate()
+            getEarliestDate(),
+            getLatestDate()
         ]).then(values => {
             resolve({
                 submissions: parseInt(values[0]),
                 comments: parseInt(values[1]),
-                earliestDate: parseInt(values[2])
+                earliestDate: parseInt(values[2]),
+                latestDate: parseInt(values[3])
             });
         }).catch(err => {
             console.log('[Error] api.getGlobalStats -> ' + err);
@@ -325,6 +327,18 @@ function getEarliestDate() {
     const qb = Comments.query();
     qb.select(bookshelf.knex.raw('extract(epoch from posted) as date'))
     .orderBy('posted', 'asc').first();
+
+    return new Promise((resolve, reject) => {
+        qb.then(result => {
+            resolve(result.date);
+        });
+    });
+}
+
+function getLatestDate() {
+    const qb = Comments.query();
+    qb.select(bookshelf.knex.raw('extract(epoch from posted) as date'))
+    .orderBy('posted', 'desc').first();
 
     return new Promise((resolve, reject) => {
         qb.then(result => {

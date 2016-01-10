@@ -1,4 +1,25 @@
-.top-commenters-chart {
-    height: 350px;
-    margin-top: $spacing-unit/2;
+.top-commenters {
+    .top-commenters-chart {
+        height: 350px;
+        margin-top: $spacing-unit/2;
+    }
+
+    .top-commenters-buttons {
+        text-align: center;
+    }
+
+    @include media-query($breakpoint-medium) {
+        .top-commenters-meta {
+            .top-commenters-title {
+                float: left;
+            }
+
+            .top-commenters-buttons {
+                float: right;
+                padding-top: 16px;
+            }
+
+            @extend %clearfix;
+        }
+    }
 }

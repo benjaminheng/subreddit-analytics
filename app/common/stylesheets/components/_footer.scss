@@ -1,14 +1,29 @@
 .footer {
     border-top: 1px solid #E0E0E0;
     background-color: #FDFDFD;
-    text-align: center;
-    padding-bottom: $spacing-unit/3;
+    padding-bottom: $spacing-unit;
     color: #888888;
     position: absolute;
     bottom: 0;
     width: 100%;
+    text-align: center;
+    font-size: 0.9em;
+
+    .footer-container {
+        max-width: $content-width;
+        margin: auto;
+        padding: 0px $spacing-unit;
+    }
 
     .highlight {
         color: $accent-color;
+    }
+
+    p .item {
+        &:not(:last-child):after {
+            content: '|';
+            font-size: 1.2em;
+            padding: 0 $spacing-unit/2;
+        }
     }
 }

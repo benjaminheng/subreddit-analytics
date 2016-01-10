@@ -12,11 +12,20 @@ html, body {
     padding: 0;
 }
 
-
 body {
     color: $text-color;
     font-family: $base-font-family;
     font-size: $body-font-size;
     line-height: $line-height-ratio;
     background-color: $body-bg-color;
+}
+
+a {
+    text-decoration: none;
+    color: $link-color;
+
+    &:hover {
+        text-decoration: underline;
+        color: $link-hover-color;
+    }
 }

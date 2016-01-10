@@ -5,7 +5,7 @@
 .app-wrapper {
     min-height: 100%;
     position: relative;
-    padding-bottom: 165px; // manually calculated: height of footer + spacing-unit*2
+    padding-bottom: 195px; // manually calculated: height of footer + spacing-unit*2
 }
 
 .content-wrapper {
@@ -24,9 +24,10 @@
 
 .default-button {
     padding: 7px 15px;
+    margin-bottom: 15px;
     border: 0px;
     border-radius: 3px;
-    border: 1px solid #BBB;
+    border: 1px solid #BBBBBB;
     color: #909090;
     background-color: transparent;
     font-size: 1.1em;

@@ -3,9 +3,9 @@ import { RECEIVE_GLOBAL_STATS } from '../actions';
 
 const initialState = Immutable.fromJS({
     earliestDate: 0,
+    latestDate: 0,
     submissions: 0,
-    comments: 0,
-    votes: 0
+    comments: 0
 });
 
 export default function globalStats(state = initialState, action) {

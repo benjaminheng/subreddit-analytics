@@ -11,6 +11,7 @@ import PostList from '../components/PostList';
 import defaultPeriods from '../utils/defaultPeriods';
 import Chart from '../components/Chart';
 import ChartCard from '../components/ChartCard';
+import LoadingIndicator from '../components/LoadingIndicator';
 import chartConfig from '../utils/chartConfig';
 
 class Home extends Component {
@@ -64,7 +65,7 @@ class Home extends Component {
                 <PeriodSelector selectedPeriod={selectedPeriod} onPeriodSelect={this.onPeriodSelect} />
 
                 {isFetching && 
-                    <div>Loading...</div>
+                    <LoadingIndicator />
                 }
                 {!isFetching && !stats.isEmpty() && 
                     <div>

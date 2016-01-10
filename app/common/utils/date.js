@@ -1,7 +1,10 @@
 import dateformat from 'dateformat';
 
-function pretty(seconds) {
-    return dateformat(toDate(seconds), 'dd-mm-yyyy hh:MMTT');
+function pretty(seconds, time=false) {
+    if (time) {
+        return dateformat(toDate(seconds), 'dd-mm-yyyy hh:MMTT');
+    }
+    return dateformat(toDate(seconds), 'dd-mm-yyyy');
 }
 
 function toSeconds(date) {

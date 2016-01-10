@@ -64,10 +64,14 @@ export default class TopCommenters extends Component {
         const postsClass = 'default-button' + (selected === 'posts' ? ' selected':'');
 
         return (
-            <Card>
-                <h2>{this.state.title}</h2>
-                <button className={scoreClass} ref='score' onClick={e => this.onSelect('score')}>Karma</button> 
-                <button className={postsClass} ref='posts' onClick={e => this.onSelect('posts')}>Posts</button> 
+            <Card className='top-commenters'>
+                <div className='top-commenters-meta'>
+                    <h2 className='top-commenters-title'>{this.state.title}</h2>
+                    <div className='top-commenters-buttons'>
+                        <button className={scoreClass} ref='score' onClick={e => this.onSelect('score')}>Karma</button> 
+                        <button className={postsClass} ref='posts' onClick={e => this.onSelect('posts')}>Posts</button> 
+                    </div>
+                </div>
                 <Chart className='top-commenters-chart' config={this.state.config} />
             </Card>
         );

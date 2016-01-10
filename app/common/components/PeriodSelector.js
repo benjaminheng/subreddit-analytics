@@ -11,7 +11,7 @@ export default class PeriodSelector extends Component {
     render() {
         const { onPeriodSelect, selectedPeriod } = this.props;
         return (
-            <div>
+            <div className='period-selector'>
                 {Object.keys(defaultPeriods).map(key => 
                     <SinglePeriodItem key={key} period={key} selected={key === selectedPeriod} start={defaultPeriods[key].start} end={defaultPeriods[key].end} clickHandler={onPeriodSelect} />
                 )}
