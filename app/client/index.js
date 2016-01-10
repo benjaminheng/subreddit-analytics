@@ -7,6 +7,7 @@ import { Router, Route, IndexRoute } from 'react-router';
 import configureStore from '../common/store/configureStore';
 import App from '../common/containers/App';
 import Home from '../common/containers/Home';
+import About from '../common/containers/About';
 import Users from '../common/containers/users/Users';
 import UserIndex from '../common/containers/users/UserIndex';
 import User from '../common/containers/users/User';
@@ -32,6 +33,7 @@ render(
                     <IndexRoute component={UserIndex} />
                     <Route path="/user/:username" component={User} />
                 </Route>
+                <Route path="about" component={About} />
                 <Route path="*" component={NotFound} />
             </Route>
         </Router>

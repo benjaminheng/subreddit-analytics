@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { Link } from 'react-router';
 import date from '../utils/date';
 
 export default class Footer extends Component {
@@ -10,7 +11,7 @@ export default class Footer extends Component {
                     <div className='site-info'>
                         <p>
                             <span className='item'>
-                                <a href=''>About</a>
+                                <Link to='/about'>About</Link>
                             </span>
                             <span className='item'>
                                 Built by <a href='http://hbenjamin.com/'>Benjamin Heng</a> (<a href='https://github.com/benjaminheng'>@benjaminheng</a>)
