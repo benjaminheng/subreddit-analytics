@@ -12,7 +12,7 @@ class About extends Component {
             <Card className='about-page'>
                 <h2>About</h2>
                 <p>
-                    Subreddit Analytics lets you visualize data within the <a href='https://www.reddit.com/r/singapore/'>/r/Singapore</a> subreddit and its users. Activity information about the community, as well as individual users, are available in an easy to digest manner. It also provides visualizations to recognize well contributing members of the community.
+                    Subreddit Analytics lets you visualize data within the <a href='https://www.reddit.com/r/singapore/'>/r/Singapore</a> subreddit and its users. Activity information about the community, as well as individual users, is available in an easy to digest manner. It also provides visualizations to recognize well contributing members of the community.
                 </p>
                 <p>
                     The source code for Subreddit Analytics is freely <a href='https://github.com/benjaminheng/subreddit-analytics'>available on GitHub</a>.
