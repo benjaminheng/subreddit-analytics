@@ -346,3 +346,70 @@ function getLatestDate() {
         });
     });
 }
+
+/*  
+ *  USER STATS
+ */
+
+function getUserTotalSubmissions(username) {
+    const qb = Submissions.query();
+    qb.whereRaw('lower(author) = lower(?)', [username]).count().first();
+    return new Promise((resolve, reject) => {
+        qb.then(result => {
+            resolve(result.count);
+        });
+    });
+}
+
+function getUserTotalComments(username) {
+    const qb = Comments.query();
+    qb.whereRaw('lower(author) = lower(?)', [username]).count().first();
+    return new Promise((resolve, reject) => {
+        qb.then(result => {
+            resolve(result.count);
+        });
+    });
+}
+
+function getUserTotalKarma(username) {
+    const qbComments = Comments.query();
+    qbComments.whereRaw('lower(author) = lower(?)', [username]).sum('score').first();
+    const qbSubmissions = Submissions.query();
+    qbSubmissions.whereRaw('lower(author) = lower(?)', [username]).sum('score').first();
+    const karmaFromComments = new Promise((resolve, reject) => {
+        qbComments.then(result => {
+            resolve(result.sum ? result.sum : 0);
+        });
+    });
+    const karmaFromSubmissions = new Promise((resolve, reject) => {
+        qbSubmissions.then(result => {
+            resolve(result.sum ? result.sum : 0);
+        });
+    });
+    return new Promise((resolve, reject) => {
+        Promise.all([
+            karmaFromComments,
+            karmaFromSubmissions
+        ]).then(values => {
+            resolve(parseInt(values[0]) + parseInt(values[1]));
+        });
+    });
+}
+
+export function getUserTotalStats(username) {
+    return new Promise((resolve, reject) => {
+        Promise.all([
+            getUserTotalSubmissions(username),
+            getUserTotalComments(username),
+            getUserTotalKarma(username)
+        ]).then(values => {
+            resolve({
+                submissions: parseInt(values[0]),
+                comments: parseInt(values[1]),
+                karma: parseInt(values[2])
+            });
+        }).catch(err => {
+            console.log('[Error] api.getUserTotalStats -> ' + err);
+        });
+    });
+}

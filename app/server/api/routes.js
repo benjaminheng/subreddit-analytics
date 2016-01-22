@@ -35,4 +35,18 @@ router.get('/globalStats', function(req, res) {
     });
 });
 
+router.get('/userStats', function(req, res) {
+    const username = req.query.username;
+    console.log(`/userStats -> ' + 'username=${username}`);
+    Promise.all([
+        database.getUserTotalStats(username)
+    ]).then(results => {
+        res.json({
+            totals: results[0]
+        });
+    }).catch(err => {
+        console.log('[Error] GET /userStats -> ' + err);
+    });
+});
+
 export default router;

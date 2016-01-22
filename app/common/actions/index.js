@@ -6,6 +6,8 @@ export const ADD_PERIOD = 'ADD_PERIOD';
 export const REQUEST_STATS = 'REQUEST_STATS';
 export const RECEIVE_STATS = 'RECEIVE_STATS';
 export const RECEIVE_GLOBAL_STATS = 'RECEIVE_GLOBAL_STATS';
+export const REQUEST_USER_STATS = 'REQUEST_USER_STATS'
+export const RECEIVE_USER_STATS = 'RECEIVE_USER_STATS'
 
 export function selectPeriod(period){
     return {
@@ -46,6 +48,22 @@ function receiveStats(period, json) {
     };
 }
 
+function requestUserStats(username) {
+    return {
+        type: REQUEST_USER_STATS,
+        username
+    };
+}
+
+function receiveUserStats(username, json) {
+    return {
+        type: RECEIVE_USER_STATS,
+        username,
+        stats: json,
+        receivedAt: date.now()
+    };
+}
+
 function shouldFetchStats(state, period) {
     const periodStats = state.statsByPeriod.get(period);
     if (!periodStats) {
@@ -78,6 +96,16 @@ export function fetchStatsIfNeeded(period) {
             return dispatch(fetchStats(period));
         }
     };
+}
+
+export function fetchUserStats(username) {
+    return (dispatch, getState) => {
+        dispatch(requestUserStats(username));
+        fetch(`/api/userStats?username=${username}`)
+            .then(response => response.json())
+            .then(json => dispatch(receiveUserStats(username, json)));
+        // TODO: catch error here
+    }
 }
 
 export function fetchGlobalStats() {
