@@ -44,3 +44,25 @@
         margin-right: $spacing-unit/2;
     }
 }
+
+table.default-table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    text-align: left;
+    width: 100%;
+
+    th, td {
+        border: 0;
+        padding: 10px;
+    }
+
+    th {
+        color: #666666;
+        font-weight: 600;
+        border-bottom: 2px solid #D5D5D5;
+    }
+
+    td {
+        border-bottom: 1px solid #D5D5D5;
+    }
+}

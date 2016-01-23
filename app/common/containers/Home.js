@@ -10,6 +10,7 @@ import TopCommenters from '../components/TopCommenters';
 import PostList from '../components/PostList';
 import defaultPeriods from '../utils/defaultPeriods';
 import Chart from '../components/Chart';
+import Card from '../components/Card';
 import ChartCard from '../components/ChartCard';
 import LoadingIndicator from '../components/LoadingIndicator';
 import chartConfig from '../utils/chartConfig';
@@ -72,7 +73,10 @@ class Home extends Component {
                         {this.getTitle()}
                         <Counters items={stats.get('totals', Map())} />
                         <TopCommenters data={stats.get('topCommenters', Map())} />
-                        { /*<PostList posts={stats.getIn(['gilded', 'posts'], List())} />*/ }
+                        <Card>
+                            <h2>Gilded posts</h2>
+                            <PostList posts={stats.getIn(['gilded', 'posts'], List())} />
+                        </Card>
                         {periodRange >= 604800 &&   // >= 7 days
                             <ChartCard title='Comment distribution by day of week' config={distributionDayConfig} />
                         }
