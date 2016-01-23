@@ -12,7 +12,7 @@ class UserIndex extends Component {
 
     componentDidMount() {
         const { statsByUser, dispatch } = this.props;
-        const username = this.props.params.username;
+        const username = this.props.params.username.toLowerCase();
         if (!statsByUser.get(username)) {
             dispatch(fetchUserStats(username));
         }
@@ -20,8 +20,8 @@ class UserIndex extends Component {
 
     componentWillReceiveProps(nextProps) {
         const { statsByUser, dispatch } = this.props;
-        const currentUsername = this.props.params.username;
-        const nextUsername = nextProps.params.username;
+        const currentUsername = this.props.params.username.toLowerCase();
+        const nextUsername = nextProps.params.username.toLowerCase();
         if (currentUsername !== nextUsername && !statsByUser.get(nextUsername)) {
             dispatch(fetchUserStats(nextUsername));
         }
@@ -30,11 +30,13 @@ class UserIndex extends Component {
     render() {
         const { statsByUser } = this.props;
         const username = this.props.params.username;
-        const stats = statsByUser.getIn([username, 'stats'], Map());
-        const isFetching = statsByUser.getIn([username, 'isFetching'], false);
+        const usernameLowercase = username.toLowerCase();
+        const stats = statsByUser.getIn([usernameLowercase, 'stats'], Map());
+        const isFetching = statsByUser.getIn([usernameLowercase, 'isFetching'], false);
+
         return (
             <div>
-                <span>USERNAME: {this.props.params.username}</span>
+                <h1 className='title'>Stats for <span className='highlight'>{username}</span></h1>
                 {isFetching && 
                     <LoadingIndicator text='Fetching stats' />
                 }
