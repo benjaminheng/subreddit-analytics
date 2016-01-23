@@ -66,7 +66,7 @@ class Home extends Component {
                 <PeriodSelector selectedPeriod={selectedPeriod} onPeriodSelect={this.onPeriodSelect} />
 
                 {isFetching && 
-                    <LoadingIndicator />
+                    <LoadingIndicator text='Fetching stats' />
                 }
                 {!isFetching && !stats.isEmpty() && 
                     <div>
@@ -74,8 +74,7 @@ class Home extends Component {
                         <Counters items={stats.get('totals', Map())} />
                         <TopCommenters data={stats.get('topCommenters', Map())} />
                         {stats.getIn(['gilded', 'count'], 0) != 0 &&
-                            <Card>
-                                <h2>Gilded posts</h2>
+                            <Card title='Gilded posts'>
                                 <PostList posts={stats.getIn(['gilded', 'posts'], List())} />
                             </Card>
                         }

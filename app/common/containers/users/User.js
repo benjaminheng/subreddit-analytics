@@ -36,7 +36,7 @@ class UserIndex extends Component {
             <div>
                 <span>USERNAME: {this.props.params.username}</span>
                 {isFetching && 
-                    <LoadingIndicator />
+                    <LoadingIndicator text='Fetching stats' />
                 }
 
                 {!isFetching && !stats.isEmpty() &&

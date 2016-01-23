@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 
 export default class Card extends Component {
     constructor(props) {
@@ -13,8 +13,16 @@ export default class Card extends Component {
 
         return (
             <div className={className}>
+                {this.props.title &&
+                    <h2>{this.props.title}</h2>
+                }
                 {this.props.children}
             </div>
         );
     }
+}
+
+Card.propTypes = {
+    className: PropTypes.string,
+    title: PropTypes.string
 }

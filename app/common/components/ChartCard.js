@@ -10,8 +10,7 @@ export default class ChartCard extends Component {
     render() {
         const { title, config } = this.props;
         return (
-            <Card>
-                <h2>{title}</h2>
+            <Card title={title}>
                 <Chart config={config} />
             </Card>
         );

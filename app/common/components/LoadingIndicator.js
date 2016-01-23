@@ -9,7 +9,7 @@ export default class LoadingIndicator extends Component {
         return (
             <div className='loading-indicator'>
                 <span className='text'>
-                    Fetching stats
+                    {this.props.text}
                 </span>
                 <div className="spinner">
                     <div className="bounce1"></div>
@@ -19,4 +19,8 @@ export default class LoadingIndicator extends Component {
             </div>
         );
     }
+}
+
+LoadingIndicator.propTypes = {
+    text: PropTypes.string
 }
