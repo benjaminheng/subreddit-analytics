@@ -18,6 +18,20 @@ var Submissions = bookshelf.Collection.extend({
     model: Submission
 });
 
+function gildedSort(a, b) {
+    if (a.gilded > b.gilded) {
+        return -1;
+    } else if (a.gilded < b.gilded) {
+        return 1;
+    } else if (a.score > b.score) {
+        return -1;
+    } else if (a.score < b.score) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
 function getTotalComments(start, end) {
     const qb = Comments.query();
     qb.whereRaw(BETWEEN_QUERY, [start, end]).count().first();
@@ -261,19 +275,7 @@ export function getGilded(start, end, limit=10) {
             comments.map(item => item.type = 'comment');
             let posts = submissions.concat(comments);
             // sort descending according to gilded then score
-            posts.sort((a, b) => {
-                if (a.gilded > b.gilded) {
-                    return -1;
-                } else if (a.gilded < b.gilded) {
-                    return 1;
-                } else if (a.score > b.score) {
-                    return -1;
-                } else if (a.score < b.score) {
-                    return 1;
-                } else {
-                    return 0;
-                }
-            });
+            posts.sort(gildedSort);
             posts = posts.slice(0, limit);
             resolve({
                 posts: posts
@@ -410,6 +412,57 @@ export function getUserTotalStats(username) {
             });
         }).catch(err => {
             console.log('[Error] api.getUserTotalStats -> ' + err);
+        });
+    });
+}
+
+function getUserGildedComments(username) {
+    const qb = Comments.query();
+    qb.whereRaw('lower(author) = lower(?)', [username])
+    .where('gilded', '>', 0)
+    .orderBy('gilded', 'desc')
+    .orderBy('score', 'desc');
+
+    return new Promise((resolve, reject) => {
+        qb.then(result => {
+            resolve(result);
+        });
+    });
+}
+
+function getUserGildedSubmissions(username) {
+    const qb = Submissions.query();
+    qb.whereRaw('lower(author) = lower(?)', [username])
+    .where('gilded', '>', 0)
+    .orderBy('gilded', 'desc')
+    .orderBy('score', 'desc');
+
+    return new Promise((resolve, reject) => {
+        qb.then(result => {
+            resolve(result);
+        });
+    });
+}
+
+export function getUserGilded(username) {
+    return new Promise((resolve, reject) => {
+        Promise.all([
+            getUserGildedSubmissions(username),
+            getUserGildedComments(username)
+        ]).then(values => {
+            let submissions = values[0];
+            let comments = values[1];
+            submissions.map(item => item.type = 'submission');
+            comments.map(item => item.type = 'comment');
+            let posts = submissions.concat(comments);
+            // sort descending according to gilded then score
+            posts.sort(gildedSort);
+            resolve({
+                count: posts.length,
+                posts: posts
+            });
+        }).catch(err => {
+            console.log('[Error] api.getUserGilded -> ' + err);
         });
     });
 }
