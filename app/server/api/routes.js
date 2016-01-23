@@ -41,12 +41,16 @@ router.get('/userStats', function(req, res) {
     Promise.all([
         database.getUserTotalStats(username),
         database.getUserGilded(username),
-        database.getUserTopPosts(username)
+        database.getUserTopPosts(username),
+        database.getUserCommentDistribution(username),
+        database.getUserCommentsPerMonth(username)
     ]).then(results => {
         res.json({
             totals: results[0],
             gilded: results[1],
-            topPosts: results[2]
+            topPosts: results[2],
+            distribution: results[3],
+            commentsPerMonth: results[4]
         });
     }).catch(err => {
         console.log('[Error] GET /userStats -> ' + err);

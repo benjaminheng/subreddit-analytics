@@ -2,6 +2,16 @@ import bookshelf from './bookshelf';
 
 const BETWEEN_QUERY = 'extract(epoch from posted) > ? AND extract(epoch from posted) < ?';
 
+const DAY_MAPPING = {
+    0: 'Sunday', 
+    1: 'Monday', 
+    2: 'Tuesday',
+    3: 'Wednesday',
+    4: 'Thursday',
+    5: 'Friday',
+    6: 'Saturday'
+}
+
 var Comment = bookshelf.Model.extend({
     tableName: 'comment'
 });
@@ -104,7 +114,7 @@ function getTopCommentersByScore(start, end, limit) {
 
 // Comment distribution by hour of day
 function getCommentDistributionByTime(start, end) {
-    /* SELECT date_part('hour', datehour) AS hour, FLOOR(AVG(count)) AS count 
+    /* SELECT date_part('hour', datehour) AS hour, SUM(count) AS count 
      * FROM (
      *  SELECT date_trunc('hour', posted) AS datehour, count(*) AS count 
      *  FROM comment 
@@ -115,7 +125,7 @@ function getCommentDistributionByTime(start, end) {
      * ORDER BY date_part('hour', datehour)
      */
     const qb = Comments.query();
-    qb.select(bookshelf.knex.raw("date_part('hour', datehour) as hour, floor(avg(count)) as count"))
+    qb.select(bookshelf.knex.raw("date_part('hour', datehour) as hour, sum(count) as count"))
     .from(function() {
         this.select(bookshelf.knex.raw("date_trunc('hour', posted) as datehour, count(*) as count"))
         .from('comment')
@@ -135,7 +145,7 @@ function getCommentDistributionByTime(start, end) {
 
 // Comment distribution by day of week
 function getCommentDistributionByDay(start, end) {
-    /* SELECT date_part('dow', dateday) AS day, FLOOR(AVG(count)) AS count 
+    /* SELECT date_part('dow', dateday) AS day, SUM(count) AS count 
      * FROM (
      *  SELECT date(posted) as dateday, count(*) AS count 
      *  FROM comment 
@@ -146,7 +156,7 @@ function getCommentDistributionByDay(start, end) {
      * ORDER BY date_part('dow', dateday) 
      */
     const qb = Comments.query();
-    qb.select(bookshelf.knex.raw("date_part('dow', dateday) AS day, FLOOR(AVG(count)) AS count"))
+    qb.select(bookshelf.knex.raw("date_part('dow', dateday) AS day, sum(count) as count"))
     .from(function() {
         this.select(bookshelf.knex.raw("date(posted) as dateday, count(*) AS count"))
         .from('comment')
@@ -159,17 +169,8 @@ function getCommentDistributionByDay(start, end) {
 
     return new Promise((resolve, reject) => {
         qb.then(result => {
-            const mapping = {
-                0: 'Sunday', 
-                1: 'Monday', 
-                2: 'Tuesday',
-                3: 'Wednesday',
-                4: 'Thursday',
-                5: 'Friday',
-                6: 'Saturday'
-            }
             result.map(item => {
-                item.day = mapping[item.day];
+                item.day = DAY_MAPPING[item.day];
             });
             resolve(result);
         });
@@ -505,6 +506,81 @@ export function getUserTopPosts(username, limit=10) {
             });
         }).catch(err => {
             console.log('[Error] api.getUserTopPosts -> ' + err);
+        });
+    });
+}
+
+export function getUserCommentsPerMonth(username) {
+    const qb = Comments.query();
+    qb.select(bookshelf.knex.raw("date_trunc('month', posted) as order, to_char(date_trunc('month', posted), 'Mon-YYYY') as month, count(*)"))
+    .whereRaw('lower(author) = lower(?)', [username])
+    .groupBy(bookshelf.knex.raw("date_trunc('month', posted)"))
+    .orderBy(bookshelf.knex.raw("date_trunc('month', posted)"));
+
+    return new Promise((resolve, reject) => {
+        qb.then(result => {
+            resolve(result);
+        });
+    }).catch(err => {
+        console.log('[Error] api.getUserCommentsPerMonth -> ' + err);
+    });
+}
+
+function getUserCommentDistributionByTime(username) {
+    const qb = Comments.query();
+    qb.select(bookshelf.knex.raw("date_part('hour', datehour) as hour, sum(count) as count"))
+    .from(function() {
+        this.select(bookshelf.knex.raw("date_trunc('hour', posted) as datehour, count(*) as count"))
+        .from('comment')
+        .whereRaw('lower(author) = lower(?)', [username])
+        .groupBy(bookshelf.knex.raw("date_trunc('hour', posted)"))
+        .as('temp');
+    })
+    .groupBy(bookshelf.knex.raw("date_part('hour', datehour)"))
+    .orderBy(bookshelf.knex.raw("date_part('hour', datehour)"));
+
+    return new Promise((resolve, reject) => {
+        qb.then(result => {
+            resolve(result);
+        });
+    });
+}
+
+function getUserCommentDistributionByDay(username) {
+    const qb = Comments.query();
+    qb.select(bookshelf.knex.raw("date_part('dow', dateday) AS day, sum(count) AS count"))
+    .from(function() {
+        this.select(bookshelf.knex.raw("date(posted) as dateday, count(*) AS count"))
+        .from('comment')
+        .whereRaw('lower(author) = lower(?)', [username])
+        .groupBy(bookshelf.knex.raw("date(posted)"))
+        .as('temp');
+    })
+    .groupBy(bookshelf.knex.raw("date_part('dow', dateday)"))
+    .orderBy(bookshelf.knex.raw("date_part('dow', dateday)"));
+
+    return new Promise((resolve, reject) => {
+        qb.then(result => {
+            result.map(item => {
+                item.day = DAY_MAPPING[item.day];
+            });
+            resolve(result);
+        });
+    });
+}
+
+export function getUserCommentDistribution(username) {
+    return new Promise((resolve, reject) => {
+        Promise.all([
+            getUserCommentDistributionByTime(username),
+            getUserCommentDistributionByDay(username)
+        ]).then(values => {
+            resolve({
+                hour: values[0],
+                dayOfWeek: values[1]
+            });
+        }).catch(err => {
+            console.log('[Error] api.getUserCommentDistribution -> ' + err);
         });
     });
 }
