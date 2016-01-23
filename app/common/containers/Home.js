@@ -29,7 +29,10 @@ class Home extends Component {
     }
 
     componentDidMount() {
-        this.initializeDefaultPeriod();
+        const { selectedPeriod } = this.props;
+        if (selectedPeriod === 'default') {
+            this.initializeDefaultPeriod();
+        }
     }
 
     componentWillReceiveProps(nextProps) {
