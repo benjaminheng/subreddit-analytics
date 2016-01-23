@@ -466,3 +466,45 @@ export function getUserGilded(username) {
         });
     });
 }
+
+function getUserTopSubmissions(username, limit) {
+    const qb = Submissions.query();
+    qb.whereRaw('lower(author) = lower(?)', [username])
+    .orderBy('score', 'desc')
+    .limit(limit);
+
+    return new Promise((resolve, reject) => {
+        qb.then(result => {
+            resolve(result);
+        });
+    });
+}
+
+function getUserTopComments(username, limit) {
+    const qb = Comments.query();
+    qb.whereRaw('lower(author) = lower(?)', [username])
+    .orderBy('score', 'desc')
+    .limit(limit);
+
+    return new Promise((resolve, reject) => {
+        qb.then(result => {
+            resolve(result);
+        });
+    });
+}
+
+export function getUserTopPosts(username, limit=10) {
+    return new Promise((resolve, reject) => {
+        Promise.all([
+            getUserTopSubmissions(username, limit),
+            getUserTopComments(username, limit)
+        ]).then(values => {
+            resolve({
+                submissions: values[0],
+                comments: values[1]
+            });
+        }).catch(err => {
+            console.log('[Error] api.getUserTopPosts -> ' + err);
+        });
+    });
+}
