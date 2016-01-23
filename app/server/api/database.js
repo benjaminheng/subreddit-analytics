@@ -279,6 +279,7 @@ export function getGilded(start, end, limit=10) {
             posts.sort(gildedSort);
             posts = posts.slice(0, limit);
             resolve({
+                count: posts.length,
                 posts: posts
             });
         }).catch(err => {

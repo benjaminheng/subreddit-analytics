@@ -73,10 +73,12 @@ class Home extends Component {
                         {this.getTitle()}
                         <Counters items={stats.get('totals', Map())} />
                         <TopCommenters data={stats.get('topCommenters', Map())} />
-                        <Card>
-                            <h2>Gilded posts</h2>
-                            <PostList posts={stats.getIn(['gilded', 'posts'], List())} />
-                        </Card>
+                        {stats.getIn(['gilded', 'count'], 0) != 0 &&
+                            <Card>
+                                <h2>Gilded posts</h2>
+                                <PostList posts={stats.getIn(['gilded', 'posts'], List())} />
+                            </Card>
+                        }
                         {periodRange >= 604800 &&   // >= 7 days
                             <ChartCard title='Comment distribution by day of week' config={distributionDayConfig} />
                         }
