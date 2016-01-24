@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Map } from 'immutable';
+import { Map, List } from 'immutable';
 import { fetchUserStats } from '../../actions';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import Counters from '../../components/Counters';
+import ChartCard from '../../components/ChartCard';
+import chartConfig from '../../utils/chartConfig';
 
 class UserIndex extends Component {
     constructor(props) {
@@ -34,6 +36,10 @@ class UserIndex extends Component {
         const stats = statsByUser.getIn([usernameLowercase, 'stats'], Map());
         const isFetching = statsByUser.getIn([usernameLowercase, 'isFetching'], false);
 
+        const distributionDayConfig = chartConfig.commentDistributionByDay(stats.getIn(['distribution', 'dayOfWeek'], List()));
+        const distributionHourConfig = chartConfig.commentDistributionByHour(stats.getIn(['distribution', 'hour'], List()));
+        const commentsPerMonthConfig = chartConfig.commentsPerMonth(stats.get('commentsPerMonth', List()));
+
         return (
             <div>
                 <h1 className='title'>Stats for <span className='highlight'>{username}</span></h1>
@@ -44,6 +50,9 @@ class UserIndex extends Component {
                 {!isFetching && !stats.isEmpty() &&
                     <div>
                         <Counters items={stats.get('totals', Map())} />
+                        <ChartCard title='Total comments per month' config={commentsPerMonthConfig} />
+                        <ChartCard title='Comment distribution by day of week' config={distributionDayConfig} />
+                        <ChartCard title='Comment distribution by hour of day' config={distributionHourConfig} />
                     </div>
                 }
             </div>
