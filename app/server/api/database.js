@@ -351,6 +351,33 @@ function getLatestDate() {
     });
 }
 
+/*
+ *  USER INFO
+ */
+
+// Checks if user exists within the database, and returns a boolean value indicating
+// its existence as well as the proper capitalization of the username
+export function getUserInfo(username) {
+    const qbSubmissions = Submissions.query();
+    qbSubmissions.distinct('author').whereRaw('lower(author) = lower(?)', [username]).limit(1).first();
+    const qbComments = Comments.query();
+    qbComments.distinct('author').whereRaw('lower(author) = lower(?)', [username]).limit(1).first();
+
+    return new Promise((resolve, reject) => {
+        qbSubmissions.then(result => {
+            if (result) {
+                resolve({ exists: true, username: result.author });
+            }
+            qbComments.then(result => {
+                if (result) {
+                    resolve({ exists: true, username: result.author });
+                }
+                resolve({ exists: false, username: '' });
+            });
+        });
+    });
+}
+
 /*  
  *  USER STATS
  */

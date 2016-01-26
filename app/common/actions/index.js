@@ -6,8 +6,9 @@ export const ADD_PERIOD = 'ADD_PERIOD';
 export const REQUEST_STATS = 'REQUEST_STATS';
 export const RECEIVE_STATS = 'RECEIVE_STATS';
 export const RECEIVE_GLOBAL_STATS = 'RECEIVE_GLOBAL_STATS';
-export const REQUEST_USER_STATS = 'REQUEST_USER_STATS'
-export const RECEIVE_USER_STATS = 'RECEIVE_USER_STATS'
+export const REQUEST_USER_STATS = 'REQUEST_USER_STATS';
+export const RECEIVE_USER_STATS = 'RECEIVE_USER_STATS';
+export const RECEIVE_USER_INFO = 'RECEIVE_USER_INFO';
 
 export function selectPeriod(period){
     return {
@@ -64,6 +65,15 @@ function receiveUserStats(username, json) {
     };
 }
 
+function receiveUserInfo(username, json) {
+    return {
+        type: RECEIVE_USER_INFO,
+        username,
+        info: json,
+        receivedAt: date.now()
+    };
+}
+
 function shouldFetchStats(state, period) {
     const periodStats = state.statsByPeriod.get(period);
     if (!periodStats) {
@@ -104,6 +114,15 @@ export function fetchUserStats(username) {
         fetch(`/api/userStats?username=${username}`)
             .then(response => response.json())
             .then(json => dispatch(receiveUserStats(username, json)));
+        // TODO: catch error here
+    }
+}
+
+export function fetchUserInfo(username) {
+    return (dispatch, getState) => {
+        fetch(`/api/userInfo?username=${username}`)
+            .then(response => response.json())
+            .then(json => dispatch(receiveUserInfo(username, json)));
         // TODO: catch error here
     }
 }

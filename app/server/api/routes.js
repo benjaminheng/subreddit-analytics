@@ -35,6 +35,16 @@ router.get('/globalStats', function(req, res) {
     });
 });
 
+router.get('/userInfo', function(req, res) {
+    const username = req.query.username;
+    console.log(`/userInfo -> ' + 'username=${username}`);
+    database.getUserInfo(username).then(result => {
+        res.json(result);
+    }).catch(err => {
+        console.log('[Error] GET /userInfo -> ' + err);
+    });
+});
+
 router.get('/userStats', function(req, res) {
     const username = req.query.username;
     console.log(`/userStats -> ' + 'username=${username}`);
