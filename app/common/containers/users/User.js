@@ -5,6 +5,8 @@ import { fetchUserStats, fetchUserInfo } from '../../actions';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import Counters from '../../components/Counters';
 import ChartCard from '../../components/ChartCard';
+import Card from '../../components/Card';
+import PostList from '../../components/PostList';
 import chartConfig from '../../utils/chartConfig';
 
 class UserIndex extends Component {
@@ -54,6 +56,13 @@ class UserIndex extends Component {
                 {userInfo.get('exists') && !isFetching && !stats.isEmpty() &&
                     <div>
                         <Counters items={stats.get('totals', Map())} />
+
+                        {stats.getIn(['gilded', 'count'], 0) > 0 &&
+                            <Card title='Gilded posts'>
+                                <PostList posts={stats.getIn(['gilded', 'posts'], List())} />
+                            </Card>
+                        }
+
                         <ChartCard title='Total comments per month' config={commentsPerMonthConfig} />
                         <ChartCard title='Comment distribution by day of week' config={distributionDayConfig} />
                         <ChartCard title='Comment distribution by hour of day' config={distributionHourConfig} />
