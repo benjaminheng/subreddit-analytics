@@ -1,0 +1,20 @@
+.search-bar {
+    display: flex;
+    justify-content: center;
+
+    .search-input {
+        flex-grow: 1;
+        max-width: 400px;
+        height: 35px;
+        padding: 10px;
+        margin-right: $spacing-unit/2;
+        font-size: 1em;
+    }
+
+    .search-button {
+        width: 75px;
+        height: 35px;
+        font-size: 1em;
+    }
+
+}
