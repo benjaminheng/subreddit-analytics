@@ -18,6 +18,20 @@
     }
 }
 
+@mixin text-3d($height, $color) {
+    $shadow: ();
+    color: $color;
+    @for $i from 1 through $height {
+        $shadow: append($shadow, 0 $i * 1px 0 darken($color, 20 + $i / $height * 15), comma);
+    }
+    $shadow: append($shadow, 0 0 $height * 1px rgba(#000, 0.3), comma);
+    $shadow: append($shadow, 0 $height * 1px $height * 1px rgba(#000, 0.2), comma);
+    $shadow: append($shadow, 0 $height * 2px $height * 1px rgba(#000, 0.3), comma);
+    $shadow: append($shadow, 0 $height * 2.5px $height * 3px rgba(#000, 0.2), comma);
+    $shadow: append($shadow, 0 $height * 3.5px $height * 4px rgba(#000, 0.1), comma);
+    text-shadow: $shadow;
+}
+
 %clearfix {
     &:after {
         content: "";
