@@ -1,9 +1,7 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
-import { createHistory } from 'history';
-import { syncReduxAndRouter } from 'redux-simple-router';
-import { Router, Route, IndexRoute } from 'react-router';
+import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 import configureStore from '../common/store/configureStore';
 import App from '../common/containers/App';
 import Home from '../common/containers/Home';
@@ -17,16 +15,12 @@ require('../common/stylesheets/main.scss');
 
 // Grab the state from a global injected into server-generated HTML
 const initialState = window.__INITIAL_STATE__;
-
 const store = configureStore(initialState);
-const history = createHistory();
-syncReduxAndRouter(history, store)
-
 const rootElement = document.getElementById('root');
 
 render(
     <Provider store={store}>
-        <Router history={history}>
+        <Router history={browserHistory}>
             <Route path="/" component={App}>
                 <IndexRoute component={Home} />
                 <Route path="users" component={Users}>

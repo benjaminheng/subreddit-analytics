@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { pushPath } from 'redux-simple-router';
 import SearchBar from '../../components/SearchBar';
 
 class Users extends Component {
@@ -11,9 +10,10 @@ class Users extends Component {
 
     handleSearch(searchbar) {
         const { dispatch } = this.props;
+        const { router } = this.context;
         const username = searchbar.value;
         if (username !== '') {
-            dispatch(pushPath('/user/' + username));
+            router.push('/user/' + username);
             searchbar.value = '';
         }
     }
@@ -26,6 +26,10 @@ class Users extends Component {
             </div>
         );
     }
+}
+
+Users.contextTypes = {
+    router: React.PropTypes.object.isRequired
 }
 
 function select(state) {
