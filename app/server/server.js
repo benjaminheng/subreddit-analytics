@@ -1,12 +1,7 @@
 import Express from 'express';
 import path from 'path';
 import React from 'react';
-import { renderToString } from 'react-dom/server';
-import { Provider } from 'react-redux';
-import Immutable from 'immutable';
 import config from '../../config';
-import configureStore from '../common/store/configureStore';
-import App from '../common/containers/App';
 import apiRoutes from './api/routes';
 
 const app = new Express();
