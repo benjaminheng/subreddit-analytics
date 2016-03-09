@@ -4,7 +4,7 @@ import * as database from './database';
 const router = Express.Router();
 
 router.get('/stats', function(req, res) {
-    console.log(`/stats -> ' + 'start=${req.query.start} end=${req.query.end}`);
+    console.log(`/stats -> start=${req.query.start} end=${req.query.end}`);
     const start = req.query.start;
     const end = req.query.end;
     Promise.all([
@@ -27,7 +27,7 @@ router.get('/stats', function(req, res) {
 });
 
 router.get('/globalStats', function(req, res) {
-    console.log(`/globalStats -> ' + 'start=${req.query.start} end=${req.query.end}`);
+    console.log(`/globalStats -> start=${req.query.start} end=${req.query.end}`);
     database.getGlobalStats().then(result => {
         res.json(result);
     }).catch(err => {
@@ -37,7 +37,7 @@ router.get('/globalStats', function(req, res) {
 
 router.get('/userInfo', function(req, res) {
     const username = req.query.username;
-    console.log(`/userInfo -> ' + 'username=${username}`);
+    console.log(`/userInfo -> username=${username}`);
     database.getUserInfo(username).then(result => {
         res.json(result);
     }).catch(err => {
@@ -47,7 +47,7 @@ router.get('/userInfo', function(req, res) {
 
 router.get('/userStats', function(req, res) {
     const username = req.query.username;
-    console.log(`/userStats -> ' + 'username=${username}`);
+    console.log(`/userStats -> username=${username}`);
     Promise.all([
         database.getUserTotalStats(username),
         database.getUserGilded(username),
