@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
+import Card from '../../components/Card';
 
 class UserIndex extends Component {
     constructor(props) {
@@ -10,8 +11,6 @@ class UserIndex extends Component {
     render() {
         return (
             <div>
-                <div>USER INDEX</div>
-                <Link to='/user/example_username'>/user/example_username</Link>
             </div>
         );
     }
