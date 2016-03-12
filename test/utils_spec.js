@@ -14,7 +14,7 @@ describe('utils', () => {
         it('pretty formats date', () => {
             const dateObj = new Date(2015, 5, 1, 15, 0);
             const prettyDate = date.pretty(date.toSeconds(dateObj));
-            expect(prettyDate).to.equal('01-06-2015 03:00PM');
+            expect(prettyDate).to.equal('01-06-2015');
         });
 
         it('converts date to seconds', () => {
