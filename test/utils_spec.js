@@ -133,6 +133,7 @@ def do_nothing():
 \`\`\`
             `;
             const words = markdown.getWords(text);
+            expect(words).to.equal('Title of post Bolded text List item 1 List item 2');
         });
     });
 });

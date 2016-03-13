@@ -2,8 +2,6 @@ import marked from 'marked';
 
 let renderer = new marked.Renderer();
 
-// Block level renderer methods
-
 ['blockquote', 'heading', 'list', 'listitem', 'paragraph',
 'tablerow', 'tablecell', 'strong', 'em', 'codespan', 'del'].map(name => {
     renderer[name] = textPassthrough;
