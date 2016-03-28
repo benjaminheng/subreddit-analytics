@@ -69,15 +69,6 @@ class DB():
                             score integer,
                             gilded integer
                         )''')
-        self.c.execute('''
-                    CREATE TABLE IF NOT EXISTS DAY_STATS(
-                        id SERIAL,
-                        date date,
-                        submissions integer,
-                        comments integer,
-                        top_commenters varchar(255),
-                        gilds integer
-                    )''')
         self.conn.commit()
 
     # Add a row to `submission` table
